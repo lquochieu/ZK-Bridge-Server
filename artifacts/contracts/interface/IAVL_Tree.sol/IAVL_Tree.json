@@ -1,0 +1,107 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IAVL_Tree",
+  "sourceName": "contracts/interface/IAVL_Tree.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "_leafs",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "calculateRootByLeafs",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_index",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_total",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_leaf",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "_siblings",
+          "type": "bytes[]"
+        }
+      ],
+      "name": "calulateRootBySiblings",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "_leafLeft",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_leafRight",
+          "type": "bytes"
+        }
+      ],
+      "name": "hashInside",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "_leaf",
+          "type": "bytes"
+        }
+      ],
+      "name": "hashLeaf",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

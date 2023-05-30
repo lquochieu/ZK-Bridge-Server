@@ -1,0 +1,530 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ICosmosValidators",
+  "sourceName": "contracts/interface/ICosmosValidators.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getCurrentBlockHeight",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "height",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getValidatorAtHeight",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "_pubkey",
+          "type": "bytes"
+        }
+      ],
+      "name": "getValidatorHeight",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "height",
+          "type": "uint256"
+        }
+      ],
+      "name": "getValidatorSetAtHeight",
+      "outputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "",
+          "type": "bytes[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_height",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_validatorLeft",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_validatorRight",
+          "type": "address[]"
+        }
+      ],
+      "name": "updateValidatorSet",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "updateValidatorSetByProof",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "height",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "blockHash",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint256",
+              "name": "blockTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "dataHash",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint160",
+              "name": "validatorHash",
+              "type": "uint160"
+            }
+          ],
+          "internalType": "struct ICosmosBlockHeader.Header",
+          "name": "_newBlockHeader",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "optionName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_a",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256[2][2]",
+              "name": "pi_b",
+              "type": "uint256[2][2]"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_c",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVPsigned",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "validatorAddress",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "signed",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IVerifier.ValidatorHashLeftProof",
+          "name": "_validatorHashLeftProof",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "optionName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_a",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256[2][2]",
+              "name": "pi_b",
+              "type": "uint256[2][2]"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_c",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVPsigned",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "validatorAddress",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "signed",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IVerifier.ValidatorHashRightProof",
+          "name": "_validatorHashRightProof",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "optionName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_a",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256[2][2]",
+              "name": "pi_b",
+              "type": "uint256[2][2]"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_c",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "index",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IVerifier.SignatureValidatorProof[]",
+          "name": "_signatureValidatorProof",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "verifyNewHeader",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "height",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "blockHash",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint256",
+              "name": "blockTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "dataHash",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint160",
+              "name": "validatorHash",
+              "type": "uint160"
+            }
+          ],
+          "internalType": "struct ICosmosBlockHeader.Header",
+          "name": "_newBlockHeader",
+          "type": "tuple"
+        },
+        {
+          "internalType": "address",
+          "name": "_validatorAddress",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "optionName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_a",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256[2][2]",
+              "name": "pi_b",
+              "type": "uint256[2][2]"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_c",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "index",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IVerifier.SignatureValidatorProof",
+          "name": "_signatureValidatorProof",
+          "type": "tuple"
+        }
+      ],
+      "name": "verifyProofSignature",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_validatorHash",
+          "type": "address"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "optionName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_a",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256[2][2]",
+              "name": "pi_b",
+              "type": "uint256[2][2]"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_c",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVPsigned",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "validatorAddress",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "signed",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IVerifier.ValidatorHashLeftProof",
+          "name": "_validatorHashLeftProof",
+          "type": "tuple"
+        }
+      ],
+      "name": "verifyValidatorHashLeft",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "height",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "blockHash",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint256",
+              "name": "blockTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "dataHash",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint160",
+              "name": "validatorHash",
+              "type": "uint160"
+            }
+          ],
+          "internalType": "struct ICosmosBlockHeader.Header",
+          "name": "_newBlockHeader",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "optionName",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_a",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256[2][2]",
+              "name": "pi_b",
+              "type": "uint256[2][2]"
+            },
+            {
+              "internalType": "uint256[2]",
+              "name": "pi_c",
+              "type": "uint256[2]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVPsigned",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "validatorAddress",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "signed",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IVerifier.ValidatorHashRightProof",
+          "name": "_validatorHashRightProof",
+          "type": "tuple"
+        }
+      ],
+      "name": "verifyValidatorHashRight",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

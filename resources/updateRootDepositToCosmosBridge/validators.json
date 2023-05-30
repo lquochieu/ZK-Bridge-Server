@@ -1,0 +1,16 @@
+{
+  "block_height": "13221596",
+  "validators": [
+    {
+      "address": "CE104E21BB7A5CA8A1C38B594FC7425DDFA87A7F",
+      "pub_key": {
+        "type": "tendermint/PubKeyEd25519",
+        "value": "joRntIHxPf0EBNi42aRUxE+aV6D3cb9DIL3/ijkFCc0="
+      },
+      "voting_power": "25247778",
+      "proposer_priority": "0"
+    }
+  ],
+  "count": "1",
+  "total": "1"
+}

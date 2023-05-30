@@ -1,0 +1,337 @@
+package main
+
+import (
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"strconv"
+	// "github.com/cosmos/cosmos-sdk/codec"
+	types "github.com/cosmos/cosmos-sdk/codec/types"
+	tx "github.com/cosmos/cosmos-sdk/types/tx"
+	proto "github.com/cosmos/gogoproto/proto"
+	_ "github.com/cosmos/gogoproto/gogoproto"
+	signing "github.com/cosmos/cosmos-sdk/types/tx/signing"
+	github_com_cosmos_cosmos_sdk_types "github.com/cosmos/cosmos-sdk/types"
+	//cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
+	"github.com/cosmos/cosmos-proto/anyutil"
+	"cosmossdk.io/api/cosmos/crypto/secp256k1"
+	 //"github.com/gogo/protobuf/proto"
+)
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ = proto.Marshal
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+// A compilation error at this line likely means your copy of the
+// proto package needs to be updated.
+const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
+
+func stringToInt(str string) (github_com_cosmos_cosmos_sdk_types.Int, error) {
+    i, err := strconv.Atoi(str)
+    if err != nil {
+        return github_com_cosmos_cosmos_sdk_types.ZeroInt(), err
+    }
+    return github_com_cosmos_cosmos_sdk_types.NewInt(int64(i)), nil
+}
+
+type StringValue struct {
+    Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (m *StringValue) Reset()         { *m = StringValue{} }
+func (m *StringValue) String() string { return proto.CompactTextString(m) }
+func (*StringValue) ProtoMessage()    {}
+
+// Converts a string to a types.Any
+func stringToAny(str string) (*types.Any, error) {
+    // Encode the string to bytes using protobuf
+    strBytes, err := proto.Marshal(&StringValue{Value: str})
+    if err != nil {
+        return nil, err
+    }
+
+    // Decode the byte slice back to a string
+    var decodedStr StringValue
+    err = proto.Unmarshal(strBytes, &decodedStr)
+    if err != nil {
+        return nil, err
+    }
+
+    // Create a new types.Any with the decoded string and return it
+    return types.NewAnyWithValue(&decodedStr)
+}
+
+// Converts a slice of strings to a slice of types.Any
+func stringSliceToAnys(strs []string) ([]*types.Any, error) {
+    var anyStrs []*types.Any
+
+    // Loop through the slice of strings and convert each one to a types.Any
+    for _, str := range strs {
+        anyStr, err := stringToAny(str)
+        if err != nil {
+            return nil, err
+        }
+        anyStrs = append(anyStrs, anyStr)
+    }
+
+    return anyStrs, nil
+}
+
+type Transaction struct {
+	Body        Body        `json:"body"`
+	AuthInfo    AuthInfo    `json:"auth_info"`
+	Signatures  []string    `json:"signatures"`
+}
+
+type Body struct {
+	Messages                   []Message `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages"`
+	Memo                       string    `protobuf:"bytes,2,opt,name=memo,proto3" json:"memo"`
+	TimeoutHeight              string    `protobuf:"bytes,3,opt,name=timeout_height,proto3" json:"timeout_height"`
+	ExtensionOptions           []string    `protobuf:"bytes,1023,rep,name=extensionOptions,proto3" json:"extension_options"`
+	NonCriticalExtensionOptions []string   `protobuf:"bytes,2047,rep,name=non_critical_extension_options,proto3" json:"non_critical_extension_options"`
+}
+
+type Message struct {
+	Type     string `protobuf:"bytes,1,opt,name=type,proto3" json:"@type"`
+	Sender   string `protobuf:"bytes,2,opt,name=sender,proto3" json:"sender"`
+	Contract string `protobuf:"bytes,3,opt,name=contract,proto3" json:"contract"`
+	Msg      Msg    `protobuf:"bytes,4,opt,name=msg,proto3" json:"msg"`
+	Funds    []Fund `protobuf:"bytes,5,rep,name=funds,proto3" json:"funds"`
+}
+
+// Embed the proto.Message interface in the Message struct
+func (m *Message) Reset()         { *m = Message{} }
+func (m *Message) String() string { return proto.CompactTextString(m) }
+func (*Message) ProtoMessage()    {}
+
+// Convert a single Message struct to a types.Any
+func messageToAny(msg *Message) (*types.Any, error) {
+    // Encode the Message struct to bytes using protobuf
+    msgBytes, err := proto.Marshal(msg)
+    if err != nil {
+        return nil, err
+    }
+
+    // Decode the byte slice back to a message struct
+    var decodedMsg Message
+    err = proto.Unmarshal(msgBytes, &decodedMsg)
+    if err != nil {
+        return nil, err
+    }
+
+    // Create a new types.Any with the decoded message struct and return it
+    return types.NewAnyWithValue(&decodedMsg)
+}
+
+// Convert a list of Message structs to a list of types.Any
+func messagesToAnys(msgs []Message) ([]*types.Any, error) {
+    var anyMsgs []*types.Any
+
+    // Loop through the list of Message structs and convert each one to a types.Any
+    for _, msg := range msgs {
+        anyMsg, err := messageToAny(&msg)
+        if err != nil {
+            return nil, err
+        }
+        anyMsgs = append(anyMsgs, anyMsg)
+    }
+	fmt.Println("anyMsg", anyMsgs)
+    return anyMsgs, nil
+}
+
+type Msg struct {
+	Request Request `protobuf:"bytes,1,opt,name=request,proto3" json:"request"`
+}
+
+type Request struct {
+    Threshold             uint32             `protobuf:"varint,1,opt,name=threshold,proto3" json:"threshold"`
+    Service               string          `protobuf:"bytes,2,opt,name=service,proto3" json:"service"`
+    PreferenceExecutorFee PreferenceMoney `protobuf:"bytes,3,opt,name=preference_executor_fee,proto3" json:"preference_executor_fee"`
+}
+
+type PreferenceMoney struct {
+    Denom  string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom"`
+    Amount string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount"`
+}
+
+type Fund struct {
+	Denom  string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom"`
+	Amount string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount"`
+}
+
+type AuthInfo struct {
+	SignerInfos []SignerInfo `json:"signer_infos"`
+	Fee         Fee          `json:"fee"`
+}
+
+type SignerInfo struct {
+	PublicKey  PublicKey  `json:"public_key"`
+	ModeInfo   ModeInfo   `json:"mode_info"`
+	Sequence   string     `json:"sequence"`
+}
+
+type PublicKey struct {
+	Type string `json:"@type"`
+	Key  string `json:"key"`
+}
+
+type ModeInfo struct {
+	Single Single `json:"single"`
+}
+
+type Single struct {
+	Mode string `json:"mode"`
+}
+
+func GetMode (mode string) signing.SignMode {
+	if mode == "SIGN_MODE_DIRECT" {
+		return signing.SignMode_SIGN_MODE_DIRECT
+	} else if mode == "SIGN_MODE_DIRECT_AUX" {
+		return signing.SignMode_SIGN_MODE_DIRECT_AUX
+	}
+	return signing.SignMode_SIGN_MODE_EIP_191
+}
+
+type Fee struct {
+	Amount   []Fund  `json:"amount"`
+	GasLimit string `json:"gas_limit"`
+	Payer    string `json:"payer"`
+	Granter  string `json:"granter"`
+}
+
+func getBytesFileJson(path string) []byte {
+	// Open our jsonFile
+    jsonFile, err := os.Open(path + ".json")
+    // if we os.Open returns an error then handle it
+    if err != nil {
+        fmt.Println(err)
+    }
+    // fmt.Println("Successfully Opened " + path + ".json")
+    // defer the closing of our jsonFile so that we can parse it later on
+    defer jsonFile.Close()
+    byteValue, _ := ioutil.ReadAll(jsonFile)
+	return byteValue
+}
+
+func First[T, U any](val T, _ U) T {
+	return val
+}
+
+func getTx(transaction_path string) tx.Tx {
+	var transaction Transaction
+	json.Unmarshal(getBytesFileJson(transaction_path), &transaction)
+	
+	var signer_infos []tx.SignerInfo
+	signer_infos_pointer := make([]*tx.SignerInfo, len(transaction.AuthInfo.SignerInfos))
+
+	for i := 0; i < len(transaction.AuthInfo.SignerInfos); i++ {
+		pubKey := First(anyutil.New(&secp256k1.PubKey{Key: First(base64.StdEncoding.DecodeString(transaction.AuthInfo.SignerInfos[i].PublicKey.Key))}))
+		fmt.Println("pubKey", pubKey.Value)
+		signer_infos = append(signer_infos, tx.SignerInfo{
+			PublicKey: First(types.NewAnyWithValue(pubKey)),
+			ModeInfo: &tx.ModeInfo{
+				Sum: &tx.ModeInfo_Single_{
+					Single: &tx.ModeInfo_Single{
+						Mode: GetMode(transaction.AuthInfo.SignerInfos[i].ModeInfo.Single.Mode),
+					},
+				},
+			},
+			Sequence: First(strconv.ParseUint(transaction.AuthInfo.SignerInfos[i].Sequence, 10, 64)),
+		})
+
+		signer_infos_pointer[i] = &signer_infos[i]
+	}
+
+	var amount []github_com_cosmos_cosmos_sdk_types.Coin
+
+	for i := 0; i < len(transaction.AuthInfo.Fee.Amount); i++ {
+		coin := &github_com_cosmos_cosmos_sdk_types.Coin{
+			Denom: transaction.AuthInfo.Fee.Amount[i].Denom,
+			Amount: First(stringToInt(transaction.AuthInfo.Fee.Amount[i].Amount)),
+		}
+		amount = append(amount, *coin)
+	}
+
+	var signatures [][]byte
+	for i := 0; i < len(transaction.Signatures); i++ {
+		signature := First(base64.StdEncoding.DecodeString(transaction.Signatures[i]))
+
+		signatures = append(signatures, signature)
+	}
+
+	var txs = tx.Tx{
+		Body: &tx.TxBody{
+			Messages: First(messagesToAnys(transaction.Body.Messages)),
+			Memo: transaction.Body.Memo,
+			TimeoutHeight: First(strconv.ParseUint(transaction.Body.TimeoutHeight, 10, 64)) ,
+			// ExtensionOptions: First(stringSliceToAnys(transaction.Body.ExtensionOptions)),
+			// NonCriticalExtensionOptions: First(stringSliceToAnys(transaction.Body.NonCriticalExtensionOptions)),
+		},
+		AuthInfo: &tx.AuthInfo{
+			SignerInfos: signer_infos_pointer,
+			Fee: &tx.Fee{
+				Amount: amount,
+				GasLimit: First(strconv.ParseUint(transaction.AuthInfo.Fee.GasLimit, 10, 64)),
+				Payer: transaction.AuthInfo.Fee.Payer,
+				Granter: transaction.AuthInfo.Fee.Granter,
+			},
+		},
+		Signatures: signatures,
+	}
+
+	return txs
+}
+
+func main() {
+	txs := getTx("test")
+
+	txRaw := &tx.TxRaw{
+		BodyBytes: First(txs.Body.Marshal()),
+		AuthInfoBytes: First(txs.AuthInfo.Marshal()),
+		Signatures: txs.Signatures,
+	}
+
+	txBz := First(txRaw.Marshal())
+	fmt.Println("txbz", txBz)
+	// fmt.Println(txs.AuthInfo.GetSignerInfos())
+	// fmt.Println(txRaw.GetSignatures())
+	// Read the JSON file
+	// jsonFile, err := ioutil.ReadFile("test.json")
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// // Unmarshal the JSON file into a Transaction object
+	// var tx Transaction
+	// err = json.Unmarshal(jsonFile, &tx)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	
+	// // Encode the transaction as a byte array
+	// bz, err := json.Marshal(tx)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// // Encode the byte array as a base64 string
+	// encoded := base64.StdEncoding.EncodeToString(bz)
+
+	// // Print the encoded string
+	// fmt.Println(encoded)
+	// Base64 encoded string
+    b64Str := "CvQBCvEBCiQvY29zbXdhc20ud2FzbS52MS5Nc2dFeGVjdXRlQ29udHJhY3QSyAEKK29yYWkxejQ0ZGdyZXh0dW5ucnU4bWFneHpsYzVoMmg5bHlxbm15bXJkM2USK29yYWkxOWFjemx5MzNmcjNzMjMwMzBxZXUwZGV4eXU4dmNyd3dkcHZhOXYabHsicmVxdWVzdCI6eyJ0aHJlc2hvbGQiOjIsInNlcnZpY2UiOiJvcmNoYWlfcHJpY2UiLCJwcmVmZXJlbmNlX2V4ZWN1dG9yX2ZlZSI6eyJkZW5vbSI6Im9yYWkiLCJhbW91bnQiOiIwIn19fRJlClIKRgofL2Nvc21vcy5jcnlwdG8uc2VjcDI1NmsxLlB1YktleRIjCiECUP6pg90mpMNtlIPv14vgoNoO8+rxNyutq4hUm4pioz4SBAoCCAEYmLgCEg8KCQoEb3JhaRIBMBCcjSoaQBl0phtTZMAhrXpZKJUugITam0vwIVNRJ814rt/N2o0/DJgVfYc36odugPZlV5LHCcXIz5EsFXKq9LyTbe9ypb4="
+
+    // Decode the Base64 string
+    decoded, err := base64.StdEncoding.DecodeString(b64Str)
+    if err != nil {
+        fmt.Println("Error decoding Base64 string:", err)
+        return
+    }
+
+    // Convert the byte slice to a string
+
+    fmt.Println("Decoded string:", decoded)
+}
