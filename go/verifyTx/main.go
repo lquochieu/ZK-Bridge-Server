@@ -2,9 +2,13 @@ package main
 
 import (
 	//"github.com/tendermint/tendermint/crypto/tmhash"
-	"os"
-	"io/ioutil"
 	"encoding/json"
+	//"fmt"
+	"io/ioutil"
+	"os"
+	"strconv"
+	"encoding/base64"
+	types "github.com/tendermint/tendermint/types"
 )
 
 
@@ -30,17 +34,44 @@ func GetBytesFileJson(path string) []byte {
 	return byteValue
 }
 
+func TxHashToBytes(txHashs []string) types.Txs {
+	var txs types.Txs
+	for _, txHash := range txHashs {
+		txBytes, err := base64.StdEncoding.DecodeString(txHash)
+		// fmt.Printf("%x\n", txBytes)
+		// fmt.Println()
+		// fmt.Println("txByte", hex.EncodeToString(txBytes))
+		if err != nil {
+			panic(err)
+		}
+		txs = append(txs, txBytes)
+		// fmt.Println(txs)
+	}
+	return txs
+}
+
 func First[T, U any](val T, _ U) T {
 	return val
 }
 
 func main() {
-	txs := GetTx("../../resources/updateRootDepositToCosmosBridge/tx_data")
-	// fmt.Println("sender", tmhash.Sum([]byte(txs.Body.Messages[0].Sender))[:20])
 
-	input := GetDepositTreeInput("../../resources/updateRootDepositToCosmosBridge/block_header", txs)
+	validatorsSet := GetValidatorsSet("../../resources/updateRootDepositToCosmosBridge/validators1")
 
-	SaveBlockDepositRoot(input, "../../resources/updateRootDepositToEthBridge/input_go")
+	block_header_commit := GetBlockHeader("../../resources/updateRootDepositToCosmosBridge/block_header_commit")
+
+	verifySignaturesInput := GenValidatorSignaturesInput(validatorsSet, block_header_commit)
+
+	for i := 0; i < len(verifySignaturesInput); i++ {
+		SaveVerifySignatureInputToJsonFile(verifySignaturesInput[i], "./verifySignatures/input" + strconv.Itoa(i) )
+	}
+
+	// txs := GetTx("../../resources/updateRootDepositToCosmosBridge/tx_data")
+	// // fmt.Println("sender", tmhash.Sum([]byte(txs.Body.Messages[0].Sender))[:20])
+
+	// input := GetDepositTreeInput("../../resources/updateRootDepositToCosmosBridge/block_header", txs)
+
+	// SaveDepositRootToJsonFile(input, "../../resources/updateRootDepositToEthBridge/input_go")
 	// fmt.Println("txs", input);
 	// fmt.Printf("decode string  %x\n", tmhash.Sum(First(txs.Marshal())))
 }

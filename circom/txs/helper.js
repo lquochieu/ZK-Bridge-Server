@@ -1,14 +1,7 @@
-exports.saveJsonData  = exports.readJSONFilesInFolder = exports.base64ToBytes = void 0;
+exports.readJSONFilesInFolder = void 0;
 const fs = require("fs");
 const crypto = require('crypto');
 const path = require('path');
-
-function saveJsonData(path, data) {
-    const jsonData = JSON.stringify(data, null, 2);
-    fs.writeFileSync(path, jsonData, 'utf-8');
-    console.log('Data has been saved to file:', path);
-}
-exports.saveJsonData = saveJsonData;
 
 function readJSONFilesInFolder(folderPath) {
     const files = fs.readdirSync(folderPath);
@@ -58,13 +51,14 @@ function stringToAsciiBytes(str) {
     return bytes;
 }
 
-function base64ToBytes(base64String) {
-    const buffer = Buffer.from(base64String, 'base64');
-    const uint8Array = Uint8Array.from(buffer);
-    const normalArray = Array.from(uint8Array);
-    return normalArray
+function uint8ArrayToHexString(uint8Array) {
+    let hexString = "";
+    for (let i = 0; i < uint8Array.length; i++) {
+        const hex = uint8Array[i].toString(16).padStart(2, "0");
+        hexString += hex;
+    }
+    return hexString;
 }
-exports.base64ToBytes = base64ToBytes;
 
 function base64ToHex(str) {
     const result = Buffer.from(str, 'base64').toString("hex") ;

@@ -3,70 +3,16 @@ package main
 import (
 	// "bytes"
 	"encoding/base64"
-	"encoding/hex"
+	//"encoding/hex"
 	"encoding/json"
 	// "github.com/tendermint/tendermint/crypto/tmhash"
 	"bytes"
-	"io/ioutil"
 	"github.com/tendermint/tendermint/crypto/merkle"
-	types "github.com/tendermint/tendermint/types"
+	//types "github.com/tendermint/tendermint/types"
+	"io/ioutil"
 )
 
-// synthetic txs to Txs
-func B64ToHex(txs ...string) types.Txs {
-	var txHexs []types.Tx
-	for _, tx := range txs {
-		// decode base64
-		b, err := base64.StdEncoding.DecodeString(tx)
-		if err != nil {
-			panic(err)
-		}
-		// txBytes
-		// txBytes := tmhash.Sum(b)
-		// fmt.Printf("%x\n", txBytes)
-		// fmt.Println()
-
-		// txHash
-		// txHex := fmt.Sprintf("%x", txBytes)
-		txHexs = append(txHexs, b)
-	}
-	// fmt.Println(txHexs)
-	return txHexs
-}
-
-func TxHashToBytes(txHashs []string) types.Txs {
-	var txs types.Txs
-	for _, txHash := range txHashs {
-		txBytes, err := base64.StdEncoding.DecodeString(txHash)
-		// fmt.Printf("%x\n", txBytes)
-		// fmt.Println()
-		// fmt.Println("txByte", hex.EncodeToString(txBytes))
-		if err != nil {
-			panic(err)
-		}
-		txs = append(txs, txBytes)
-		// fmt.Println(txs)
-	}
-	return txs
-}
-
-func ElementEncodeTobytes(elements []string) [][]byte {
-	var txs [][]byte
-	for _, txHash := range elements {
-		txBytes, _ := hex.DecodeString(txHash)
-		// // fmt.Printf("%x\n", txBytes)
-		// // fmt.Println()
-		// // fmt.Println("txByte", hex.EncodeToString(txBytes))
-		// if err != nil {
-		// 	panic(err)
-		// }
-		txs = append(txs, txBytes)
-		// fmt.Println(txs)
-	}
-	return txs
-}
-
-func SaveBlockDepositRoot(data DepositRootCosmos, path string)  {
+func SaveDepositRootToJsonFile(data DepositRootCosmos, path string)  {
 	file, _ := json.MarshalIndent(data, "", " ")	
 	err := ioutil.WriteFile(path + ".json", file, 0644)
 
@@ -77,37 +23,15 @@ func SaveBlockDepositRoot(data DepositRootCosmos, path string)  {
 
 
 
-type PartSetHeader struct {
-	Total uint32 `json:"total"`
-	Hash string `json:"hash"`
-}
 
-type Version struct {
-	Block string `json:"block"`
-	App PartSetHeader `json:"app"`
-}
 
-type Block_ID struct {
-	Hash string `json:"hash"`
-	Parts PartSetHeader `json:"parts"`
 
-}
-type Header struct {
-	Version Version `json:"version"`
-	ChainID string `json:"chain_id"`
-	Height string `json:"height"`
-	Time string `json:"time"`
-	LastBlockID Block_ID `json:"last_block_id"`
-	LastCommitHash string `json:"last_commit_hash"`
-	DataHash string `json:"data_hash"`
-	ValidatorsHash string `json:"validators_hash"`
-	NextValidatorsHash string `json:"next_validators_hash"`
-	ConsensusHash string `json:"consensus_hash"`
-	AppHash string `json:"app_hash"`
-	LastResultsHash string `json:"last_results_hash"`
-	EvidenceHash string `json:"evidence_hash"`
-	ProposerAddress string `json:"proposer_address"`
-}
+
+
+
+
+
+
 
 type BlockDepositRootCosmos struct {
 	Header Header `json:"header"`

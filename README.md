@@ -56,7 +56,13 @@ When server have block_header. It will create proof for updating new block_heade
 ### 6. Generate proof for bridign a new deposit root on ETH
 Next, server will update deposit root to eth bridge. To do that, it need a proof for updating.
 ```bash
-#gen input for updating deposit root to ETH Bridge
+cd go/verifyTx/
+#gen input with golang for updating deposit root to ETH Bridge
+go run .
+
+cd ../..
+
+#gen procees golang input to genarate input for updating deposit root to ETH Bridge
 node circom/txs/genInputUpdateDepositRootToEthBridge.js
 
 cd circom/circuit/verifyDepositRoot/rootdepositverifier_js/
