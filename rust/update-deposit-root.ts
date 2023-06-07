@@ -9,7 +9,10 @@ import * as fs from "fs";
 const getTxAPI = "https://testnet-lcd.orai.io/cosmos/"
 
 const rpcEndpoint = "https://testnet-rpc.orai.io:443/";
+dotenv.config();
+
 const mnemonic = process.env.MNEMONIC_COSMOS!;
+
 
 function writeToEnvFile(key: String, value: String) {
     const envFilePath = '.env';
@@ -74,8 +77,8 @@ function ReadJsonFile(path: string): Record<string, any> {
 }
 
 function getInputUpdateDepositTree() {
-    let proofFile: Record<string, any> = ReadJsonFile("../resouces/updateRootDepositToCosmosBridge/proof.json");
-    let publicFile: Record<string, any> = ReadJsonFile("../resouces/updateRootDepositToCosmosBridge/public.json");
+    let proofFile: Record<string, any> = ReadJsonFile("./resources/updateRootDepositToCosmosBridge/proof.json");
+    let publicFile: Record<string, any> = ReadJsonFile("./resources/updateRootDepositToCosmosBridge/public.json");
     let proof: any[] = [];
     for (let i = 0; i < 2; i++) {
         proof.push(proofFile.pi_a[i]);
@@ -181,7 +184,7 @@ async function main() {
 
     const resQueryDepositRootTx = await QueryTxByHash(resUpdate.transactionHash);
     console.log(resQueryDepositRootTx);
-    saveJsonData("./resources/updateRootDepositToCosmosBridge/tx_data.json");
+    saveJsonData("./resources/updateRootDepositToCosmosBridge/tx_data.json", resQueryDepositRootTx);
     const resQueryBlock = await QueryBlockHeaderByHeight(resQueryDepositRootTx.height);
     saveJsonData("./resources/updateRootDepositToCosmosBridge/block.json" , resQueryBlock);
     console.log(resQueryBlock)

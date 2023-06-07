@@ -80,7 +80,7 @@ async function main() {
     console.log(resDepositQueue);
 
     for(let i = 0; i < resDepositQueue.length; i++) {
-        saveJsonData("./circom/txs/depositInfo/deposit"+ i + ".json", resDepositQueue[i])
+        saveJsonData(`./circom/txs/depositInfo/deposit${i + resDepositTree.n_leafs}.json`, resDepositQueue[i])
     }
 
 }

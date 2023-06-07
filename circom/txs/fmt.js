@@ -13,7 +13,12 @@ let tree;
 const initialize = async () => {
     mimc = await buildMimc7();
     F = mimc.F;
-    tree = new MerkleTree(32);
+
+    const options = {
+        hashFunction: hashInner,
+        zeroElement: hash([0])
+    }
+    tree = new MerkleTree(32, undefined, options);
 }
 exports.initialize = initialize;
 
@@ -29,6 +34,10 @@ function numToHex(num) {
 }
 
 exports.numToHex = numToHex;
+
+function hashInner(left, right) {
+    return hash([left, right]);
+}
 
 function hash(arr) {
     // return F.toObject(babyJub.unpackPoint(mimc.hash(L, R))[0]);

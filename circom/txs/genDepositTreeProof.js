@@ -32,8 +32,9 @@ const main = async () => {
     const oldRoot = tree.root();
 
     const siblings = [];
-
+    console.log(newValue);
     for (let i = n_leafs; i < n_leafs + nmax_leafs_update; i++) {
+        console.log(i, newValue[i])
         tree.update(i, newValue[i]);
         siblings.push(getSiblings(i));
     }
@@ -41,7 +42,7 @@ const main = async () => {
 
     const input = {
         key: range(n_leafs, n_leafs + nmax_leafs_update, 1),
-        newValue: newValue.map(e => e.toString()).slice(n_leafs, nmax_leafs_update),
+        newValue: newValue.map(e => e.toString()).slice(n_leafs, n_leafs +  nmax_leafs_update),
         oldRoot: oldRoot,
         siblings: siblings.map(sib => sib.map(e => e.toString())),
         newRoot: newRoot,
