@@ -3,11 +3,15 @@ package main
 import (
 	// "bytes"
 	"encoding/base64"
+	"fmt"
+	//"fmt"
 	//"encoding/hex"
 	"encoding/json"
 	// "github.com/tendermint/tendermint/crypto/tmhash"
 	"bytes"
+
 	"github.com/tendermint/tendermint/crypto/merkle"
+
 	//types "github.com/tendermint/tendermint/types"
 	"io/ioutil"
 )
@@ -15,23 +19,11 @@ import (
 func SaveDepositRootToJsonFile(data DepositRootCosmos, path string)  {
 	file, _ := json.MarshalIndent(data, "", " ")	
 	err := ioutil.WriteFile(path + ".json", file, 0644)
-
+	fmt.Println("Save file " + path + ".json successed")
 	if err != nil {
 		panic(err)
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 type BlockDepositRootCosmos struct {
 	Header Header `json:"header"`
@@ -60,7 +52,7 @@ func GetDepositTreeInput(path string, transaction Transaction) DepositRootCosmos
 	var key int
 	_ = key
 
-	key = len(blockDepositRootCosmos.Txs)
+	key = -1
 	for i := 0; i < len(blockDepositRootCosmos.Txs); i++ {	
 		var tx = First(base64.StdEncoding.DecodeString(blockDepositRootCosmos.Txs[i]))
 		if(bytes.Equal(First(transaction.Marshal()), tx)) {
@@ -70,7 +62,7 @@ func GetDepositTreeInput(path string, transaction Transaction) DepositRootCosmos
 
 
 	txs := TxHashToBytes(blockDepositRootCosmos.Txs)
-
+	fmt.Println("Txs ???", txs)
 	txBzs := make([][]byte, len(txs))
 	for i := 0; i < len(txs); i++ {
 		txBzs[i] = txs[i].Hash()

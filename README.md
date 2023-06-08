@@ -37,9 +37,9 @@ cd circom/circuit/verifyRootBatchTxsCosmos/verifyrootbatchtxscosmos_js/
 node generate_witness.js ./*.wasm ../input.json ../witness.wtns
 
 # Gen proof with rapid sanrk
-../../../../rapidsnark/build/prover circuit_final.zkey witness.wtns ../../../../resources/updateRootDepositToCosmosBridge/proof.json ../../../../resources/updateRootDepositToCosmosBridge/public.json
+../../../../rapidsnark/build/prover ../circuit_final.zkey ../witness.wtns ../../../../resources/updateRootDepositToCosmosBridge/proof.json ../../../../resources/updateRootDepositToCosmosBridge/public.json
 
-cd ../../../..
+cd ....
 ```
 
 ### 4. Update root deposit to Cosmos bridge
@@ -60,7 +60,7 @@ cd go/verifyTx/
 #gen input with golang for updating deposit root to ETH Bridge
 go run .
 
-cd ../..
+cd ...
 
 #gen procees golang input to genarate input for updating deposit root to ETH Bridge
 node circom/txs/genInputUpdateDepositRootToEthBridge.js
@@ -71,9 +71,9 @@ cd circom/circuit/verifyDepositRoot/rootdepositverifier_js/
 node generate_witness.js ./*.wasm ../input.json ../witness.wtns
 
 # Gen proof with rapid sanrk
-../../../../rapidsnark/build/prover circuit_final.zkey witness.wtns ../../../../resources/updateRootDepositToEthBridge/proof.json ../../../../resources/updateRootDepositToEthBridge/public.json
+../../../../rapidsnark/build/prover ../circuit_final.zkey ../witness.wtns ../../../../resources/updateRootDepositToEthBridge/proof.json ../../../../resources/updateRootDepositToEthBridge/public.json
 
-cd ../../../..
+cd ....
 ```
 ### 7. Update a new deposit root on ETH
 Then, server will interact with ETH Bridge contract to update new deposit root.
@@ -99,9 +99,9 @@ cd circom/circuit/verifyClaimTransaction/verifyclaimtransaction_js/
 node generate_witness.js ./*.wasm ../input.json ../witness.wtns
 
 # Gen proof with rapid sanrk
-../../../../rapidsnark/build/prover circuit_final.zkey witness.wtns ../../../../resources/verifyClaimTransaction/proof.json ../../../../resources/verifyClaimTransaction/public.json
+../../../../rapidsnark/build/prover ../circuit_final.zkey ../witness.wtns ../../../../resources/verifyClaimTransaction/proof.json ../../../../resources/verifyClaimTransaction/public.json
 
-cd ../../../..
+cd ....
 ```
 
 ### 9. Now, we can test withdraw asset by command below:

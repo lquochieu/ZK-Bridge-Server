@@ -32,42 +32,32 @@ async function getClient(): Promise<SigningCosmWasmClient> {
 }
 
 
-async function sendToken(amount: String) {
+async function supportTokenPair() {
     // const query = await client.getTx("2D925C0F81EF1E26662B0A2A9277180CE853F9F07C60CA2F3E64E7F565A19F78")
     const wallet = await getWallet();
     const client = await getClient();
 
     const senderAddress = (await wallet.getAccounts())[0].address;
-    const contractAddress = process.env.COSMOS_TOKEN || "";
-    const msg_bridge = {
-        destination_chainid: 97,
-        eth_bridge_address: hexToDecimal("0x66EeCaf1D881F7D828224422387b6fe0359AA69f"),
-        eth_receiver: hexToDecimal("0x72e03B6E7AB9DdFe1699B65B8A46A3Cf30092020")
-    }
-    console.log("msg", msg_bridge);
-    console.log("binary", toBinary(msg_bridge));
+    const contractAddress = process.env.COSMOS_BRIDGE || "";
     const msg = {
-        send: {
-            contract: process.env.COSMOS_BRIDGE || "",
-            amount: amount,
-            msg: toBinary(msg_bridge)
+        support_token_pair: {
+            destination_chainid: 97,
+            cosmos_token_address: process.env.COSMOS_TOKEN,
+            eth_token_address: hexToDecimal(process.env.ETH_TOKEN)
         }
-    }
+    };
+    console.log("msg", msg);
     const fee = "auto"
     const memo: any = null
     const res = await client.execute(senderAddress, contractAddress, msg, fee, memo)
     console.log(res)
     return res;
-
 }
 
 async function main() {
-    const resSendToken = await sendToken("10");
-    console.log("sendtoken 0", resSendToken)
-    const resSendToken1 = await sendToken("10");
-    console.log("sendtoken 1", resSendToken1)
-    const resSendToken2 = await sendToken("10");
-    console.log("sendtoken 2", resSendToken2)
+    const resSupportTokenPair = await supportTokenPair();
+    console.log(resSupportTokenPair);
 
 }
+
 main();

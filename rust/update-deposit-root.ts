@@ -1,6 +1,5 @@
 //@ts-nocheck
-import { SigningCosmWasmClient, Secp256k1HdWallet, setupWebKeplr, coin, UploadResult, InstantiateResult, toBinary } from "cosmwasm";
-import { CosmWasmClient } from "cosmwasm";
+import { SigningCosmWasmClient, Secp256k1HdWallet  } from "cosmwasm";
 import * as dotenv from "dotenv";
 import { Decimal } from "@cosmjs/math";
 import axios from 'axios';
@@ -178,11 +177,11 @@ async function updateDepositTree() {
 
 
 async function main() {
-    const resUpdate = await updateDepositTree();
-    console.log(resUpdate);
-    writeToEnvFile("TX_HASH", resUpdate.transactionHash)
+    // const resUpdate = await updateDepositTree();
+    // console.log(resUpdate);
+    // writeToEnvFile("TX_HASH", resUpdate.transactionHash)
 
-    const resQueryDepositRootTx = await QueryTxByHash(resUpdate.transactionHash);
+    const resQueryDepositRootTx = await QueryTxByHash("602C0580AF409E450A36D5B832F7D167B9F3069C046A5170202C8A6A80AD2948");
     console.log(resQueryDepositRootTx);
     saveJsonData("./resources/updateRootDepositToCosmosBridge/tx_data.json", resQueryDepositRootTx);
     const resQueryBlock = await QueryBlockHeaderByHeight(resQueryDepositRootTx.height);
