@@ -8,6 +8,18 @@ dotenv.config();
 const rpcEndpoint = "https://testnet-rpc.orai.io:443/";
 const mnemonic = process.env.MNEMONIC_COSMOS!;
 
+function hexToDecimal(hex: string): string {
+    // Remove the '0x' prefix if present
+    if (hex.startsWith('0x')) {
+        hex = hex.slice(2);
+    }
+
+    // Convert the hexadecimal string to a decimal string
+    const decimalString = BigInt(`0x${hex}`).toString();
+
+    return decimalString;
+}
+
 async function getWallet(): Promise<Secp256k1HdWallet> {
     const wallet = await Secp256k1HdWallet.fromMnemonic(mnemonic, { prefix: "orai" });
     return wallet;

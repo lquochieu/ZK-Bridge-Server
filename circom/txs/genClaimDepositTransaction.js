@@ -6,7 +6,7 @@ const depositTree = require("./depositTree/deposit_tree.json");
 const main = async () => {
     await initialize();
     const tree = getTree();
-    let data = readJSONFilesInFolder("./test/txs/depositInfo");
+    let data = readJSONFilesInFolder("./circom/txs/depositInfo");
     
     let n_leafs = depositTree.n_leafs;
     let nqueue_leafs = depositTree.nqueue_leafs
@@ -46,7 +46,7 @@ const main = async () => {
         : value
     , 2);
     console.log(json)
-    saveJsonData("./src/transaction/transactioneth/verifyClaimTransaction/input.json", input)
+    saveJsonData("./circom/circuit/verifyClaimTransaction/input.json", input)
 };
 
 main()

@@ -9,14 +9,14 @@ const depositTree = require("./depositTree/deposit_tree.json");
 const main = async () => {
     await initialize();
     const tree = getTree();
-    let data = readJSONFilesInFolder("./test/txs/depositInfo");
+    let data = readJSONFilesInFolder("./circom/txs/depositInfo");
     
     let n_leafs = depositTree.n_leafs;
     let nqueue_leafs = depositTree.nqueue_leafs
     let nmax_leafs_update = 5;
 
     const newValue = Array.from(data, (data) => hash([data.eth_bridge_address, data.eth_receiver, data.amount, data.eth_token_address]));
-
+    console.log("----new---\n", newValue, "\n-----")
     for (i = nqueue_leafs; i < nmax_leafs_update; i++) {
         newValue.push(hash([0]));
     }
@@ -47,7 +47,7 @@ const main = async () => {
         newRoot: newRoot,
     };
     
-    saveJsonData("./src/transaction/transactioncosmos/verifyRootBatchTxsCosmos/input.json", input)
+    saveJsonData("./circom/circuit/verifyRootBatchTxsCosmos/input.json", input)
 };
 
 main()
