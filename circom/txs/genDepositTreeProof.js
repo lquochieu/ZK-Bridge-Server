@@ -10,7 +10,7 @@ const main = async () => {
     await initialize();
     const tree = getTree();
     let data = readJSONFilesInFolder("./circom/txs/depositInfo");
-    
+
     let n_leafs = depositTree.n_leafs;
     let nqueue_leafs = depositTree.nqueue_leafs
     let nmax_leafs_update = 5;
@@ -25,7 +25,7 @@ const main = async () => {
         tree.update(i, newValue[i]);
     }
 
-    if(n_leafs == 0) {
+    if (n_leafs == 0) {
         tree.update(0, hash([0]));
     }
 
@@ -41,12 +41,12 @@ const main = async () => {
 
     const input = {
         key: range(n_leafs, n_leafs + nmax_leafs_update, 1),
-        newValue: newValue.map(e => e.toString()).slice(n_leafs, n_leafs +  nmax_leafs_update),
+        newValue: newValue.map(e => e.toString()).slice(n_leafs, n_leafs + nmax_leafs_update),
         oldRoot: oldRoot,
         siblings: siblings.map(sib => sib.map(e => e.toString())),
         newRoot: newRoot,
     };
-    
+
     saveJsonData("./circom/circuit/verifyRootBatchTxsCosmos/input.json", input)
 };
 

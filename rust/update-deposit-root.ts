@@ -83,7 +83,7 @@ function getInputUpdateDepositTree() {
         proof.push(proofFile.pi_a[i]);
     }
     for (let i = 0; i < 2; i++) {
-        for (let j = 1; j >= 0; j--) {
+        for (let j = 0; j < 2; j++) {
             proof.push(proofFile.pi_b[i][j]);
         }
     }
@@ -165,16 +165,26 @@ async function updateDepositTree() {
     const client = await getClient();
 
     const senderAddress = (await wallet.getAccounts())[0].address;
-    const contractAddress = process.env.COSMOS_BRIDGE || "";
+    const contractAddress = process.env.COSMOS_BRIDGE || "";  
     const msg = getInputUpdateDepositTree();
     console.log("msg", msg);
     const fee = "auto"
-    const memo: any = null
+    const memo: any = null;
+
     const res = await client.execute(senderAddress, contractAddress, msg, fee, memo)
     console.log(res)
     return res;
 }
 
+async function saveBlockHeader(height: string) {
+    const response = await axios.request({
+        method: "get",
+        url: `https://testnet-rpc.orai.io/commit?heigh=${height}`
+    });
+
+    console.log(response.data);
+    saveJsonData("./resources/cosmosHeader/cosmosHeader.json", response.data);
+}
 
 async function main() {
     const resUpdate = await updateDepositTree();
@@ -190,5 +200,8 @@ async function main() {
     const resQueryValidatorsSet = await QueryValidatorsSetByHeight(resQueryDepositRootTx.height);
     console.log(resQueryValidatorsSet)
     saveJsonData("./resources/updateRootDepositToCosmosBridge/validators.json", resQueryValidatorsSet);
+
+    await saveBlockHeader(resQueryDepositRootTx.height);
 }
+
 main();
