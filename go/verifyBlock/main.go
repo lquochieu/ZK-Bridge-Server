@@ -12,14 +12,39 @@ import (
 
 	//"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/tendermint/tendermint/crypto/ed25519"
-	"github.com/tendermint/tendermint/light"
+	//"github.com/tendermint/tendermint/light"
 	"github.com/tendermint/tendermint/types"
 	"github.com/tendermint/tendermint/version"
 )
 
+func SaveDepositRootToJsonFile(data VerifyBlockHeaderInput, path string)  {
+	file, _ := json.MarshalIndent(data, "", " ")	
+	err := ioutil.WriteFile(path + ".json", file, 0644)
+	fmt.Println("Save file " + path + ".json successed")
+	if err != nil {
+		panic(err)
+	}
+}
+
 const (
 	maxClockDrift = 600 * time.Second * 10000000
 )
+
+type VerifyBlockHeaderInput struct {
+	Height int64 `json:"height"`
+	DataHash []byte `json:"dataHash"`
+	ParrentSiblings [][]byte `json:"parrentSiblings"`
+	BlockHash []byte `json:"blockHash"`
+	BlockTime int64 `json:"blockTime"`
+	PartsTotal int64 `json:"partsTotal"`
+	PartsHash []byte `json:"partsHash"`
+	SigTimeSeconds int64 `json:"sigTimeSeconds"`
+	SigTimeNanos int64 `json:"sigTimeNanos"`
+	PubKeys []byte `json:"pubKeys"`
+	VotingPowers int64 `json:"votingPowers"`
+	R8 []byte `json:"R8"`
+	S []byte `json:"S"`
+}
 
 type PartSetHeader struct {
 	Total uint32 `json:"total"`
@@ -117,6 +142,8 @@ func stringToInt64(str string) (int64) {
 	}
 	return i
 }
+
+
 
 func getBlockHeader(signed_header_path string) types.SignedHeader {
 	var signed_header SignedHeader
@@ -225,31 +252,35 @@ func getTransactions(transactionsDataPath string) types.Txs {
 
 func main() {
 	// Open our jsonFile
-	last_signed_header_path := "resources/last_signed_header"
-	new_signed_header_path := "resources/new_signed_header"
-	validator_path := "resources/validators"
+	new_signed_header_path := "../../resources/updateRootDepositToCosmosBridge/block_header_commit"
+	validator_path := "../../resources/updateRootDepositToCosmosBridge/validators"
 	// transactionsDataPath := "resources/transaction_data"
 
 	var (
-		header = getBlockHeader(last_signed_header_path)
-
 		newHeader = getBlockHeader(new_signed_header_path)
 		// // 20, 30, 40, 50 - the first 3 don't have 2/3, the last 3 do!
 		vals = getValidatorsSet(validator_path)
 		// txs = getTransactions(transactionsDataPath)
 	)
 
-	// for i := 0; i < len(vals.Validators); i++ {
-	// 	fmt.Print("pub key vals ", i , vals.Validators[i].PubKey, "\n")
-	// }
-	//fmt.Println(header)
-	// fmt.Println(newHeader)
+	sib := GetDataAndValHashSiblings(newHeader)
 
-	err := light.VerifyAdjacent(&header, &newHeader, &vals, 1000*time.Hour, First(time.Parse(time.RFC3339, "2023-02-18T17:07:42Z")), maxClockDrift)
-
-	fmt.Println(err)
-	// fmt.Println(txs)
-	// fmt.Printf("%x\n", txs.Hash())
-	
-	
+	var input = VerifyBlockHeaderInput{
+		Height: newHeader.Height,
+		DataHash: newHeader.DataHash.Bytes(),
+		ParrentSiblings: sib,
+		BlockHash: newHeader.Commit.BlockID.Hash.Bytes(),
+		BlockTime: newHeader.Time.UnixNano(),
+		PartsTotal: int64(newHeader.Commit.BlockID.PartSetHeader.Total),
+		PartsHash: newHeader.Commit.BlockID.PartSetHeader.Hash.Bytes(),
+		SigTimeSeconds: newHeader.Commit.Signatures[0].Timestamp.Unix(),
+		SigTimeNanos: int64(newHeader.Commit.Signatures[0].Timestamp.Nanosecond()),
+		PubKeys: vals.Validators[0].PubKey.Bytes(),
+		VotingPowers: vals.Validators[0].VotingPower,
+		R8: newHeader.Commit.Signatures[0].Signature[0:32],
+		S: newHeader.Commit.Signatures[0].Signature[32:],
+	}
+	fmt.Println(input)
+	SaveDepositRootToJsonFile(input, "../../resources/cosmosHeader/input_go")
 }
+

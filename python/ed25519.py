@@ -1,4 +1,6 @@
 import hashlib
+import json
+import base64
 
 def sha512(s):
     return hashlib.sha512(s).digest()
@@ -153,29 +155,43 @@ def verify(public, msg, signature):
     sB = point_mul(s, G)
     hA = point_mul(h, A)
     return point_equal(sB, point_add(R, hA))
-# secret = ("00000000000000000000000000000000").encode()
-# public = [61, 64, 23, 195, 232, 67, 137, 90, 146, 183, 10, 167, 77, 27, 126, 188, 156, 152, 44, 207, 46, 196, 150, 140, 192, 205, 85, 241, 42, 244, 102, 12]
-# msg = ("200").encode()
 
-# print(msg.hex())
-# # b = bytes.fromhex("82AF")
-# print(type(msg))
-pubKeys = bytes.fromhex("FD284E309E23A18641A8F545B43D3EB24539F65061F38B80C8B92678BE83A70A")
-# pubKeys = (114506364221104021127115807106445440684533277565203929892187927450183962699530).to_bytes(32, "little")
-# msg = bytes([110, 8, 2, 17, 197, 198, 157, 0, 0, 0, 0, 0, 34, 72, 10, 32, 221, 176, 16, 254, 205, 166, 67, 239, 182, 231, 240, 251, 203, 176, 164, 171, 127, 35, 23, 63, 134, 91, 64, 237, 244, 113, 57, 163, 98, 126, 18, 0, 18, 36, 8, 1, 18, 32, 28, 66, 108, 220, 131, 113, 179, 106, 254, 145, 161, 129, 136, 18, 8, 121, 3, 179, 92, 111, 198, 239, 153, 141, 25, 255, 45, 207, 110, 250, 0, 165, 42, 12, 8, 228, 139, 196, 159, 6, 16, 179, 137, 182, 245, 1, 50, 9, 79, 114, 97, 105, 99, 104, 97, 105, 110])
-msg = bytes.fromhex("6e080211c5c69d000000000022480a20ddb010fecda643efb6e7f0fbcbb0a4ab7f23173f865b40edf47139a3627e12001224080112201c426cdc8371b36afe91a1818812087903b35c6fc6ef998d19ff2dcf6efa00a52a0c08e48bc49f0610b389b6f50132094f726169636861696e")
-R8 = bytes([29, 199, 36, 178, 84, 166, 115, 76, 30, 71, 15, 32, 51, 147, 51, 1, 30, 66, 149, 118, 179, 245, 1, 108, 92, 133, 123, 255, 26, 191, 209, 137])
-S = bytes([204, 46, 245, 69, 46, 84, 169, 94, 155, 240, 248, 97, 172, 191, 212, 248, 191, 204, 117, 38, 12, 181, 189, 199, 208, 109, 101, 68, 129, 167, 97, 4])
-# signatures = bytes([29, 199, 36, 178, 84, 166, 115, 76, 30, 71, 15, 32, 51, 147, 51, 1, 30, 66, 149, 118, 179, 245, 1, 108, 92, 133, 123, 255, 26, 191, 209, 137, 204, 46, 245, 69, 46, 84, 169, 94, 155, 240, 248, 97, 172, 191, 212, 248, 191, 204, 117, 38, 12, 181, 189, 199, 208, 109, 101, 68, 129, 167, 97, 4])
-signatures = bytes.fromhex("1dc724b254a6734c1e470f20339333011e429576b3f5016c5c857bff1abfd189cc2ef5452e54a95e9bf0f861acbfd4f8bfcc75260cb5bdc7d06d654481a76104")
-print("xyz", (92354788868936625807699115826764918510763644220227890190145006419348403216644).to_bytes(32, "little").hex())
-print(R8.hex())
-print(S.hex())
+def convert_base64_to_hex(json_file_path):
+    # Read the JSON file
+    with open(json_file_path) as file:
+        data = json.load(file)
 
-# print(pubKeys.hex())
-print(verify(pubKeys, msg, signatures))
-# print(sign(secret, msg).hex())
+    # Convert base64 fields to hexadecimal strings
+    data['dataHash'] = base64.b64decode(data['dataHash']).hex()
+    data['parrentSiblings'] = [base64.b64decode(sibling).hex() for sibling in data['parrentSiblings']]
+    data['blockHash'] = base64.b64decode(data['blockHash']).hex()
+    data['partsHash'] = base64.b64decode(data['partsHash']).hex()
+    data['pubKeys'] = base64.b64decode(data['pubKeys']).hex()
+    data['R8'] = base64.b64decode(data['R8']).hex()
+    data['S'] = base64.b64decode(data['S']).hex()
 
-# signature = [146, 160, 9, 169, 240, 212, 202, 184, 114, 14, 130, 11, 95, 100, 37, 64, 162, 178, 123, 84, 22, 80, 63, 143, 179, 118, 34, 35, 235, 219, 105, 218, 8, 90, 193, 228, 62, 21, 153, 110, 69, 143, 54, 19, 208, 241, 29, 140, 56, 123, 46, 174, 180, 48, 42, 238, 176, 13, 41, 22, 18, 187, 12, 0]
+    return data
 
-# verify(public, msg, signature)
+def save_fields_to_json(data, file_path):
+    """
+    Save the provided fields data to a JSON file.
+    
+    Args:
+        data (dict): A dictionary containing the field values.
+        file_path (str): The path and filename for the JSON file.
+    """
+    with open(file_path, "w") as json_file:
+        json.dump(data, json_file)
+
+    print("JSON file saved successfully.")
+    
+data = convert_base64_to_hex("../resources/cosmosHeader/input_go.json")
+
+pubKeys = bytes.fromhex(data['pubKeys'])
+R8 = bytes.fromhex(data['R8'])
+S = bytes.fromhex(data['S'])
+
+data['A'] = point_decompress(pubKeys)
+data['R'] = point_decompress(R8)
+
+save_fields_to_json(data, "../resources/cosmosHeader/input_python.json")

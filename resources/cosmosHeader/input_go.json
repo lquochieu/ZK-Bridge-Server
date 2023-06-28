@@ -1,0 +1,19 @@
+{
+ "height": 11856466,
+ "dataHash": "47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
+ "parrentSiblings": [
+  "03ZQzkN/yLRGI8sLe8VjX86Z1+S+xFeQvYdOBh4+IOE=",
+  "5tyXydznB9aEblOxOhtFLEWKvRTVZCJWbN3h7VcXZsY=",
+  "+VbV9zByht8RRX4lcq0R16ew2vz0KwR7ww/DtcWnCfI="
+ ],
+ "blockHash": "ZE/NNTgo/V4aa6A7O/vyT7+2M6W4M3VMtWEftswlvLo=",
+ "blockTime": 1685582107136952326,
+ "partsTotal": 1,
+ "partsHash": "PPWB7KKg7BzBTym1DOkJtjppJaThX8tLj7sDM+ScunY=",
+ "sigTimeSeconds": 1685582112,
+ "sigTimeNanos": 863000079,
+ "pubKeys": "joRntIHxPf0EBNi42aRUxE+aV6D3cb9DIL3/ijkFCc0=",
+ "votingPowers": 25247881,
+ "R8": "NhRNrAz4d/vGaSPGRCn4LB+OnaMw0alHAq3y3K5/mc4=",
+ "S": "0lfPEW63auHKHQcZAc9rqW0NbkWuxX/dkmAimV+AnQk="
+}

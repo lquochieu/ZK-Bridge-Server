@@ -1,5 +1,5 @@
 const { addLeaf, getTree, initialize, hash, getSiblings } = require("./fmt");
-const { readJSONFilesInFolder, getAddresFromAsciiString, saveJsonData } = require("./helper");
+const { readJSONFilesInFolder, getAddresFromAsciiString, saveJsonData } = require("../helper");
 
 const depositTree = require("./depositTree/deposit_tree.json");
 
@@ -7,7 +7,7 @@ const main = async () => {
     await initialize();
     const tree = getTree();
     let data = readJSONFilesInFolder("./circom/txs/depositInfo");
-    
+
     let n_leafs = depositTree.n_leafs;
     let nqueue_leafs = depositTree.nqueue_leafs
     let nmax_leafs_update = 5;
@@ -35,16 +35,16 @@ const main = async () => {
         eth_receiver: data[index].eth_receiver,
         amount: data[index].amount,
         eth_token_address: data[index].eth_token_address,
-        key:  data[index].key,
+        key: data[index].key,
         siblings: siblings.map(e => e.toString()),
         root: tree.root()
     };
     // console.log(input);
     json = JSON.stringify(input, (key, value) =>
-    typeof value === 'bigint'
-        ? value.toString()
-        : value
-    , 2);
+        typeof value === 'bigint'
+            ? value.toString()
+            : value
+        , 2);
     console.log(json)
     saveJsonData("./circom/circuit/verifyClaimTransaction/input.json", input)
 };
