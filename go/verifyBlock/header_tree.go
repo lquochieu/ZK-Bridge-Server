@@ -3,10 +3,10 @@ package main
 import (
 	// "bytes"
 	//"encoding/base64"
-	//"fmt"
+	"fmt"
 	//"encoding/hex"
 	//"encoding/json"
-	// "github.com/tendermint/tendermint/crypto/tmhash"
+	//  "github.com/tendermint/tendermint/crypto/tmhash"
 	//"bytes"
 
 	"github.com/tendermint/tendermint/crypto/merkle"
@@ -113,6 +113,24 @@ func TxHashToBytes(bytesArray [][]byte) types.Txs {
 }
 
 
+// Proof returns a simple merkle proof for this node.
+// Panics if i < 0 or i >= len(txs)
+// TODO: optimize this!
+func Proof(i int, txs types.Txs) types.TxProof {
+	l := len(txs)
+	bzs := make([][]byte, l)
+	for i := 0; i < l; i++ {
+		bzs[i] = txs[i]
+	}
+	root, proofs := merkle.ProofsFromByteSlices(bzs)
+
+	return types.TxProof{
+		RootHash: root,
+		Data:     txs[i],
+		Proof:    *proofs[i],
+	}
+}
+
 func GetDataAndValHashSiblings(header types.SignedHeader) [][]byte {
 	var header_field [][]byte
 	
@@ -123,15 +141,15 @@ func GetDataAndValHashSiblings(header types.SignedHeader) [][]byte {
 	chainIDMarshal := cdcEncode(header.ChainID)
 	header_field = append(header_field, chainIDMarshal)
 
+	HeightMarshal := cdcEncode(header.Height)
+	header_field = append(header_field, HeightMarshal)
+
 	pbt := First(gogotypes.StdTimeMarshal(header.Time))
 	header_field = append(header_field, pbt)
 
 	pbbi := header.LastBlockID.ToProto()
 	bzbi := First(pbbi.Marshal())
 	header_field = append(header_field, bzbi)
-
-	HeightMarshal := cdcEncode(header.Height)
-	header_field = append(header_field, HeightMarshal)
 
 	LastCommitHashMarshal := cdcEncode(header.LastCommitHash)
 	header_field = append(header_field, LastCommitHashMarshal)
@@ -161,15 +179,9 @@ func GetDataAndValHashSiblings(header types.SignedHeader) [][]byte {
 	header_field = append(header_field, ProposerAddressMarshal)
 	
 	txs := TxHashToBytes(header_field)
-	txBzs := make([][]byte, len(txs))
-	for i := 0; i < len(txs); i++ {
-		txBzs[i] = txs[i].Hash()
-	}
-
-	merkle.HashFromByteSlices(txBzs)
-	
-	proof := txs.Proof(6)
+		
+	proof := Proof(6, txs)
 	siblings := proof.Proof.Aunts[1:]
-
+	fmt.Println("root", proof.RootHash.Bytes())
 	return siblings
 }

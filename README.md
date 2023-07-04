@@ -51,9 +51,23 @@ npx ts-node rust/update-deposit-root.ts
 Then, update the isInTree of this txs is **True**
 
 ### 5. Bridge block_header
-When server have block_header. It will create proof for updating new block_header to eth_bridge. (A tạm skip bước này nh, cái này testnet có điều chỉnh lại, e chưa kịp sinh file zkey)
-
-### 6. Generate proof for bridign a new deposit root on ETH
+When server have block_header. It will create proof for updating new block_header to eth_bridge. 
+```
+cd go/verifyBlock
+go run .
+cd ../python
+python ed25519.py
+cd ..
+node circom/validator/genBlockHeaderInput.js
+cd circom/circuit/validators/validators-testnet/verifyblockheader_js
+node generate_witness.js ./*.wasm ../input.json ../witness.wtns
+../../../../rapidsnark/build/prover ../circuit_final.zkey ../witness.wtns ../../../../resources/cosmosHeader/proof.json ../../../../resources/cosmosHeader/public.json
+```
+After we have proof, pulish it to ETH Bridge
+```
+node solidity/scripts/sdk/examples/updateBlockHeaderTestnet.js
+```
+### 6. Generate proof for briding a new deposit root on ETH
 Next, server will update deposit root to eth bridge. To do that, it need a proof for updating.
 ```bash
 cd go/verifyTx/
@@ -78,11 +92,6 @@ cd ....
 ### 7. Update a new deposit root on ETH
 Then, server will interact with ETH Bridge contract to update new deposit root.
 ```bash
-# Bởi vì hiện tại chưa bridge blockheader, nên trước khi update thì a chạy giúp e 2 cái lệnh này, nó deploy 1 cái block_header mới
-node solidity/scripts/deploy-upgrades/deploy-cosmos-block-header.js
-
-node solidity/scripts/sdk/examples/setLibAddressManager.js
-
 node solidity/scripts/sdk/examples/updateRootDeposit.js
 ```
 

@@ -191,7 +191,9 @@ pubKeys = bytes.fromhex(data['pubKeys'])
 R8 = bytes.fromhex(data['R8'])
 S = bytes.fromhex(data['S'])
 
-data['A'] = point_decompress(pubKeys)
-data['R'] = point_decompress(R8)
+pA = point_decompress(pubKeys)
+pR = point_decompress(R8)
+data['A'] = [str(x) for x in pA]
+data['R'] = [str(x) for x in pR]
 
 save_fields_to_json(data, "../resources/cosmosHeader/input_python.json")

@@ -32,21 +32,21 @@ exports.deleteTokenPair = deleteTokenPair;
 
 const updateRootDepositTree = async (pathInput, pathProof) => {
     const input = getProofUpdateRootDeposit(pathInput, pathProof);
-    console.log(input)
-    // const rdOwner = await rdOwnerOraisanBridge();
+    // console.log(input)
+    const rdOwner = await rdOwnerOraisanBridge();
 
-    // const res = await rdOwner.updateRootDepositTree([
-    //     input.optionName,
-    //     input.pi_a,
-    //     input.pi_b,
-    //     input.pi_c,
-    //     input.cosmosSender,
-    //     input.cosmosBridge,
-    //     input.depositRoot,
-    //     input.dataHash
-    // ]);
-    // await res.wait();
-    // return (await rdOwner.getLastDepositRoot());
+    const res = await rdOwner.updateRootDepositTree([
+        input.optionName,
+        input.pi_a,
+        input.pi_b,
+        input.pi_c,
+        input.cosmosSender,
+        input.cosmosBridge,
+        input.depositRoot,
+        input.dataHash
+    ]);
+    await res.wait();
+    return (await rdOwner.getLastDepositRoot());
 }
 exports.updateRootDepositTree = updateRootDepositTree;
 

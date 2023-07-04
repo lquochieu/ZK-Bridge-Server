@@ -79,6 +79,13 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "updateValidatorSetByProof",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -96,14 +103,25 @@
           "type": "address[]"
         }
       ],
-      "name": "updateValidatorSet",
+      "name": "updateValidatorSetLR",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "updateValidatorSetByProof",
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_height",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_validatorSet",
+          "type": "address"
+        }
+      ],
+      "name": "updateValidatorSetTestnet",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -118,9 +136,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "blockHash",
-              "type": "uint160"
+              "type": "bytes20"
             },
             {
               "internalType": "uint256",
@@ -128,14 +146,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "dataHash",
-              "type": "uint160"
+              "type": "bytes20"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "validatorHash",
-              "type": "uint160"
+              "type": "bytes20"
             }
           ],
           "internalType": "struct ICosmosBlockHeader.Header",
@@ -290,9 +308,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "blockHash",
-              "type": "uint160"
+              "type": "bytes20"
             },
             {
               "internalType": "uint256",
@@ -300,14 +318,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "dataHash",
-              "type": "uint160"
+              "type": "bytes20"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "validatorHash",
-              "type": "uint160"
+              "type": "bytes20"
             }
           ],
           "internalType": "struct ICosmosBlockHeader.Header",
@@ -439,9 +457,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "blockHash",
-              "type": "uint160"
+              "type": "bytes20"
             },
             {
               "internalType": "uint256",
@@ -449,14 +467,14 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "dataHash",
-              "type": "uint160"
+              "type": "bytes20"
             },
             {
-              "internalType": "uint160",
+              "internalType": "bytes20",
               "name": "validatorHash",
-              "type": "uint160"
+              "type": "bytes20"
             }
           ],
           "internalType": "struct ICosmosBlockHeader.Header",

@@ -1,5 +1,5 @@
 const { ethers, upgrades } = require("hardhat");
-const { readJsonFile, getAddresFromHexString, writeToEnvFile } = require("../utils/helper");
+const { readJsonFile, getAddresFromHexString, writeToEnvFile, bigNumberToHexString, convertHexStringToAddress } = require("../utils/helper");
 const { setLib_AddressManager } = require("../sdk/libAddressManager");
 require("dotenv").config();
 
@@ -50,7 +50,7 @@ const getCosmosValidatorsConstructor = () => {
 
     const validatorAddresses = [];
     for (i = 0; i < data.commit.signatures.length; i++) {
-        validatorAddresses.push(("0x" + data.commit.signatures[i].validator_address).toString())
+        validatorAddresses.push(convertHexStringToAddress(("0x" + data.commit.signatures[i].validator_address).toString()))
     }
 
     const inputValidators = {
@@ -72,8 +72,8 @@ const deployCosmosValidator = async () => {
         ]);
     await cosmosValidators.deployed();
     console.log("CosmosValidators dedployed at: ", cosmosValidators.address);
-    writeToEnvFile("COSMOS_VALIDATORS", cosmosValidators.address)
     await setLib_AddressManager("COSMOS_VALIDATORS", cosmosValidators.address)
+    writeToEnvFile("COSMOS_VALIDATORS", cosmosValidators.address)
 }
 exports.deployCosmosValidator = deployCosmosValidator;
 
@@ -86,8 +86,8 @@ const deployOraisanBridge = async () => {
         ]);
     await oraisanBridge.deployed();
     console.log("OraisanBridge dedployed at: ", oraisanBridge.address);
-    writeToEnvFile("ORAISAN_BRIDGE", oraisanBridge.address)
     await setLib_AddressManager("ORAISAN_BRIDGE", oraisanBridge.address)
+    writeToEnvFile("ORAISAN_BRIDGE", oraisanBridge.address)
 }
 exports.deployOraisanBridge = deployOraisanBridge;
 
@@ -99,8 +99,8 @@ const deployOraisanGate = async () => {
         ]);
     await oraisanGate.deployed();
     console.log("OraisanGate dedployed at: ", oraisanGate.address);
-    writeToEnvFile("ORAISAN_GATE", oraisanGate.address)
     await setLib_AddressManager("ORAISAN_GATE", oraisanGate.address)
+    writeToEnvFile("ORAISAN_GATE", oraisanGate.address)
 }
 exports.deployOraisanGate = deployOraisanGate;
 
@@ -109,8 +109,8 @@ const deployVerifierClaimTransaction = async () => {
     const verifier = await upgrades.deployProxy(Verifier, []);
     await verifier.deployed();
     console.log("VerifierClaimTransaction dedployed at: ", verifier.address);
-    writeToEnvFile("VERIFIER_CLAIM_TRANSACTION", verifier.address)
     await setLib_AddressManager("VERIFIER_CLAIM_TRANSACTION", verifier.address)
+    writeToEnvFile("VERIFIER_CLAIM_TRANSACTION", verifier.address)
 }
 exports.deployVerifierClaimTransaction = deployVerifierClaimTransaction;
 
@@ -119,18 +119,28 @@ const deployVerifierRootDeposit = async () => {
     const verifier = await upgrades.deployProxy(Verifier, []);
     await verifier.deployed();
     console.log("VerifierRootDeposit dedployed at: ", verifier.address);
-    writeToEnvFile("VERIFIER_ROOT_DEPOSIT", verifier.address)
     await setLib_AddressManager("VERIFIER_ROOT_DEPOSIT", verifier.address)
+    writeToEnvFile("VERIFIER_ROOT_DEPOSIT", verifier.address)
 }
 exports.deployVerifierRootDeposit = deployVerifierRootDeposit;
+
+const deployVerifierBlockHeader = async () => {
+    const Verifier = await ethers.getContractFactory("VerifierBlockHeader");
+    const verifier = await upgrades.deployProxy(Verifier, []);
+    await verifier.deployed();
+    console.log("VerifierBlockHeader dedployed at: ", verifier.address);
+    await setLib_AddressManager("VERIFIER_BLOCK_HEADER", verifier.address)
+    writeToEnvFile("VERIFIER_BLOCK_HEADER", verifier.address)
+}
+exports.deployVerifierBlockHeader = deployVerifierBlockHeader;
 
 const deployVerifierValidatorSignature = async () => {
     const Verifier = await ethers.getContractFactory("VerifierValidatorSignature");
     const verifier = await upgrades.deployProxy(Verifier, []);
     await verifier.deployed();
     console.log("VerifierValidatorSignature dedployed at: ", verifier.address);
-    writeToEnvFile("VERIFIER_VALIDATOR_SIGNATURE", verifier.address)
     await setLib_AddressManager("VERIFIER_VALIDATOR_SIGNATURE", verifier.address)
+    writeToEnvFile("VERIFIER_VALIDATOR_SIGNATURE", verifier.address)
 }
 exports.deployVerifierValidatorSignature = deployVerifierValidatorSignature;
 
@@ -139,8 +149,8 @@ const deployVerifierValidatorsLeft = async () => {
     const verifier = await upgrades.deployProxy(Verifier, []);
     await verifier.deployed();
     console.log("VerifierValidatorsLeft dedployed at: ", verifier.address);
-    writeToEnvFile("VERIFIER_VALIDATORS_LEFT", verifier.address)
     await setLib_AddressManager("VERIFIER_VALIDATORS_LEFT", verifier.address)
+    writeToEnvFile("VERIFIER_VALIDATORS_LEFT", verifier.address)
 }
 exports.deployVerifierValidatorsLeft = deployVerifierValidatorsLeft;
 
@@ -149,8 +159,8 @@ const deployVerifierValidatorsRight = async () => {
     const verifier = await upgrades.deployProxy(Verifier, []);
     await verifier.deployed();
     console.log("VerifierValidatorsRight dedployed at: ", verifier.address);
-    writeToEnvFile("VERIFIER_VALIDATORS_RIGHT", verifier.address)
     await setLib_AddressManager("VERIFIER_VALIDATORS_RIGHT", verifier.address)
+    writeToEnvFile("VERIFIER_VALIDATORS_RIGHT", verifier.address)
 }
 exports.deployVerifierValidatorsRight = deployVerifierValidatorsRight;
 
@@ -163,7 +173,7 @@ const deployERC20Token = async (name, value, ethBridge) => {
     ]);
     await eRC20Token.deployed();
     console.log("ERC20Token dedployed at: ", eRC20Token.address);
-    writeToEnvFile("ETH_TOKEN", eRC20Token.address)
     await setLib_AddressManager("ETH_TOKEN", eRC20Token.address)
+    writeToEnvFile("ETH_TOKEN", eRC20Token.address)
 }
 exports.deployERC20Token = deployERC20Token;

@@ -12,6 +12,8 @@ require("@ethersproject/transactions");
 require("@openzeppelin/hardhat-upgrades");
 require("dotenv").config();
 
+const DEFAULT_MNEMONIC =
+  "explain tackle mirror kit van hammer degree position ginger unfair soup bonus";
 const INFURA_URL =
   "https://rinkeby.infura.io/v3/05ef08be7bec4c9eb35821bd02018d19";
 const KOVAN_URL = "https://kovan.infura.io/v3/ba63b223746842d89619ef053b179319";
@@ -28,13 +30,23 @@ module.exports = {
     },
   },
 
-  defaultNetwork: "bscTestnet",
+  defaultNetwork: "ftmTestnet",
   networks: {
     bscTestnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,
       accounts: [`0x${PRIVATE_KEY}`],
-      gas: 3e6,
+      // gas: 5e6,
+      // gasPrice: auto,
+      // gas: 5e6,
+    },
+    ftmTestnet: {
+      url: "https://rpc.ankr.com/fantom_testnet",
+      chainId: 4002,
+      accounts: [`0x${PRIVATE_KEY}`],
+      // gas: 5e6,
+      // gasPrice: auto,
+      // gas: 5e6,
     },
     rinkeby: {
       url: INFURA_URL,

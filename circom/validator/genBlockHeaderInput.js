@@ -17,7 +17,8 @@ const main = async () => {
     const pointR = input_python.R.map(e => BigInt(e));
     // console.log("pA", utils.point_compress(BigInt("0x" + input_python.pubKeys)))
     // console.log("pR", utils.point_compress(BigInt("0x" + input_python.R8)))
-
+    console.log("pA", pointA)
+    console.log("pR", pointR)
     const chunkA = [];
     const chunkR = [];
 
@@ -49,7 +50,7 @@ const main = async () => {
         PointR: chunkR,
     }
 
-    console.log(input)
+    // console.log(input)
     saveJsonData('./circom/circuit/validators/validators-testnet/input.json', input)
 
 }
