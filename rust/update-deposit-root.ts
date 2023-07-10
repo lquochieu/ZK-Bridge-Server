@@ -1,5 +1,6 @@
 //@ts-nocheck
-import { SigningCosmWasmClient, Secp256k1HdWallet  } from "cosmwasm";
+import { SigningCosmWasmClient, Secp256k1HdWallet, setupWebKeplr, coin, UploadResult, InstantiateResult, toBinary } from "cosmwasm";
+import { CosmWasmClient } from "cosmwasm";
 import * as dotenv from "dotenv";
 import { Decimal } from "@cosmjs/math";
 import axios from 'axios';
