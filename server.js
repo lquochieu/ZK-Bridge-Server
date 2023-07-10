@@ -2,7 +2,8 @@ const express = require("express");
 require("dotenv").config();
 const compression = require("compression");
 const cors = require("cors");
-const logger = require('morgan');
+const winston = require("winston");
+const morgan = require("morgan");
 const mongoose = require("mongoose");
 const swaggerUi = require('swagger-ui-express');
 const cron = require("node-cron");
@@ -12,12 +13,30 @@ const { cronjobUpdate } = require("./src/controller/Controller");
 
 const app = express();
 
+const logger = winston.createLogger({
+    level: 'debug',
+    levels: winston.config.npm.levels,
+    format: winston.format.combine(
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+        winston.format.colorize({ all: true }),
+        winston.format.printf(
+            (info) => `${info.timestamp} ${info.level}: ${info.message}`,
+        ),
+    ),
+    transports: [new winston.transports.Console()]
+})
+const myStream = {
+    write: (text) => {
+      logger.info(text);
+    }
+}
+
 app.set("port", process.env.PORT ?? 8000);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(compression());
 app.use(cors());
-app.use(logger("dev"));
+app.use(morgan("dev", { stream: myStream }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get("/", (req, res) => {
     res.json({ message: "Server is online." });
@@ -45,18 +64,18 @@ mongoose.connect(MONGODB_URL, {
 }).then(() => {
 	//don't show the log when it is test
 	if(process.env.NODE_ENV !== "test") {
-		console.log("Connected to %s", MONGODB_URL);
-		console.log("App is running ... \n");
-		console.log("Press CTRL + C to stop the process. \n");
+		logger.info("Connected to %s", MONGODB_URL);
+		logger.info("App is running ... \n");
+		logger.info("Press CTRL + C to stop the process. \n");
 	}
 
 	app.use("/api/", require('./src/router'));
 
 	const PORT = process.env.PORT || 8000;
 	app.listen(PORT, () => {
-		console.log(`Server is running on port ${PORT}.`);
+		logger.info(`Server is running on port ${PORT}.`);
 	});
 }).catch(err => {
-    console.error("App starting error:", err.message);
+    logger.info("App starting error:", err.message);
     process.exit(1);
 });
