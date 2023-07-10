@@ -64,7 +64,7 @@ mongoose.connect(MONGODB_URL, {
 }).then(() => {
 	//don't show the log when it is test
 	if(process.env.NODE_ENV !== "test") {
-		logger.info("Connected to %s", MONGODB_URL);
+		logger.info(`Connected to ${MONGODB_URL}`);
 		logger.info("App is running ... \n");
 		logger.info("Press CTRL + C to stop the process. \n");
 	}
