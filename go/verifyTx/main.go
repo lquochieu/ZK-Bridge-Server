@@ -71,6 +71,5 @@ func main() {
 	input := GetDepositTreeInput("../../resources/updateRootDepositToCosmosBridge/block", txs)
 
 	SaveDepositRootToJsonFile(input, "../../resources/updateRootDepositToEthBridge/input_go")
-	fmt.Println("txs", First(txs.Marshal()));
 	fmt.Printf("decode string %x\n", tmhash.Sum(First(txs.Marshal())))
 }

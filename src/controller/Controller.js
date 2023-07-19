@@ -1,4 +1,5 @@
 const DepositInfor = require("../models/DepositInfor");
+const DepositTree = require("../models/DepositTree");
 const { generateProofUpdateRoot } = require("../services/GenerateProofUpdateRoot");
 const { generateUserProof } = require("../services/GenerateUserProof");
 const { queryDepositQueue } = require("../services/QueryDepositQueue");
@@ -57,17 +58,35 @@ exports.queryDepositInforByUserAddress = async(req, res) => {
     }
 }
 
-exports.cronjobUpdate = async () => {
+exports.cronjobUpdate = async (req, res) => {
     try {
         console.log("------------cronjob auto update------------")
-        await queryDepositQueue();
-        await generateProofUpdateRoot();
-        await updateDepositRootToCosmosBridge();
-        await bridgeBlockHeader();
+        // await queryDepositQueue();
+        // await generateProofUpdateRoot();
+        // await updateDepositRootToCosmosBridge();
+        // await bridgeBlockHeader();
         await generateProofEth();
         await updateDepositRootOnEth();
         console.log("------------cronjob end update-------------")
+        res.status(200).send({});
+
     } catch (err) {
         console.log(err);
+        res.status(500).send({err: err.toString()});
+
+    }
+}
+
+exports.deleteDb = async (req, res) => {
+    try {
+        await DepositInfor.remove({});
+        await DepositTree.remove({});
+        const resposne = await DepositInfor.find();
+        res.status(200).send({resposne});
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({err: err.toString()});
+
     }
 }

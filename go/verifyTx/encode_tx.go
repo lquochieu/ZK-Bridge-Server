@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
+	//"fmt"
 
 	"strconv"
 	//"bytes"
@@ -96,7 +96,7 @@ func (m *Body) Marshal() (dAtA []byte, err error) {
 	_ = i
 	var l int
 	_ = l
-	fmt.Println(i)
+	// fmt.Println(i)
 			
 	if &m != nil {
 		{
@@ -459,7 +459,7 @@ func (m *Message) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if len(m.Contract) > 0 {
 		i -= len(m.Contract)
 		copy(dAtA[i:], []byte(m.Contract))
-		fmt.Println("Contract", []byte(m.Contract))
+		// fmt.Println("Contract", []byte(m.Contract))
 
 		i = EncodeVarintTx(dAtA, i, uint64(len(m.Contract)))
 		i--
@@ -472,7 +472,7 @@ func (m *Message) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if len(m.Sender) > 0 {
 		i -= len(m.Sender)
 		copy(dAtA[i:], []byte(m.Sender))
-		fmt.Println("Sender", []byte(m.Sender))
+		// fmt.Println("Sender", []byte(m.Sender))
 		i = EncodeVarintTx(dAtA, i, uint64(len(m.Sender)))
 		i--
 		dAtA[i] = 0xa

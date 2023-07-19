@@ -2,7 +2,7 @@
 exports.getProofValidatorSignature = exports.getProofUpdateRootDeposit = void 0;
 const { ethers } = require("hardhat");
 const fs = require("fs");
-const {readJsonFile, convertHexStringToAddress, bigNumberToHexString} = require("../utils/helper")
+const { readJsonFile, convertHexStringToAddress, bigNumberToHexString } = require("../utils/helper")
 require("dotenv").config();
 
 // const abiCoder = ethers.utils.defaultAbiCoder;
@@ -10,7 +10,7 @@ function numToHex(num) {
     return ethers.utils.hexZeroPad(ethers.BigNumber.from(num).toHexString(), 32);
 }
 
-const getProofBlockHeader =  (pathInput, pathProof) => {
+const getProofBlockHeader = (pathInput, pathProof) => {
     const inputVerifierBlockHeaderJson = JSON.parse(fs.readFileSync(pathInput).toString());
     const proofVerifierBlockHeaderJson = JSON.parse(fs.readFileSync(pathProof).toString());
     const proofVerifierBlockHeaderData = {
@@ -25,9 +25,9 @@ const getProofBlockHeader =  (pathInput, pathProof) => {
         pi_b: proofVerifierBlockHeaderData.b,
         pi_c: proofVerifierBlockHeaderData.c,
         validatorAddress: convertHexStringToAddress(bigNumberToHexString((inputVerifierBlockHeaderJson[0]))),
-        validatorHash: convertHexStringToAddress(bigNumberToHexString((inputVerifierBlockHeaderJson[1]))),
-        dataHash: convertHexStringToAddress(bigNumberToHexString((inputVerifierBlockHeaderJson[2]))),
-        blockHash: convertHexStringToAddress(bigNumberToHexString((inputVerifierBlockHeaderJson[3]))),
+        validatorHash: bigNumberToHexString((inputVerifierBlockHeaderJson[1])),
+        dataHash: bigNumberToHexString((inputVerifierBlockHeaderJson[2])),
+        blockHash: bigNumberToHexString((inputVerifierBlockHeaderJson[3])),
         height: inputVerifierBlockHeaderJson[4],
     };
     console.log(inputProof)
@@ -35,7 +35,7 @@ const getProofBlockHeader =  (pathInput, pathProof) => {
 }
 exports.getProofBlockHeader = getProofBlockHeader;
 
-const getProofValidatorSignature =  (pathInput, pathProof) => {
+const getProofValidatorSignature = (pathInput, pathProof) => {
     const inputVerifierValidatorSignatureJson = JSON.parse(fs.readFileSync(pathInput).toString());
     const proofVerifierValidatorSignatureJson = JSON.parse(fs.readFileSync(pathProof).toString());
     const proofVerifierValidatorSignatureData = {
@@ -72,7 +72,7 @@ const getProofUpdateRootDeposit = (pathInput, pathProof) => {
         cosmosSender: convertHexStringToAddress(bigNumberToHexString(inputUpdateDepositRootJson[0])),
         cosmosBridge: convertHexStringToAddress(bigNumberToHexString(inputUpdateDepositRootJson[1])),
         depositRoot: inputUpdateDepositRootJson[2],
-        dataHash: convertHexStringToAddress(bigNumberToHexString(inputUpdateDepositRootJson[3]))
+        dataHash: bigNumberToHexString(inputUpdateDepositRootJson[3])
     };
     return inputProof;
 }

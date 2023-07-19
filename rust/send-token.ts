@@ -52,9 +52,9 @@ async function sendToken(amount: String) {
     const senderAddress = (await wallet.getAccounts())[0].address;
     const contractAddress = process.env.COSMOS_TOKEN || "";
     const msg_bridge = {
-        destination_chainid: 97,
-        eth_bridge_address: hexToDecimal("0x66EeCaf1D881F7D828224422387b6fe0359AA69f"),
-        eth_receiver: hexToDecimal("0x72e03B6E7AB9DdFe1699B65B8A46A3Cf30092020")
+        destination_chainid: 4002,
+        eth_bridge_address: hexToDecimal(process.env.ORAISAN_BRIDGE),
+        eth_receiver: hexToDecimal(process.env.PUBLIC_KEY)
     }
     console.log("msg", msg_bridge);
     console.log("binary", toBinary(msg_bridge));

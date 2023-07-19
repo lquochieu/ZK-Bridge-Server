@@ -262,7 +262,8 @@ func main() {
 		vals = getValidatorsSet(validator_path)
 		// txs = getTransactions(transactionsDataPath)
 	)
-
+	fmt.Println(newHeader)
+	
 	sib := GetDataAndValHashSiblings(newHeader)
 
 	var input = VerifyBlockHeaderInput{

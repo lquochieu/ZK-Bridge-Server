@@ -27,6 +27,25 @@
                 }
             }
         },
+        "/api/db": {
+          "delete": {
+              "summary": "Delete db",
+              "description": "Delete db",
+              "responses": {
+                  "200": {
+                    "description": "Success response",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "example": {}
+                        }
+                      }
+                    }
+                  }
+              }
+          }
+      },
         "/api/update": {
             "put": {
                 "summary": "Gen proof",

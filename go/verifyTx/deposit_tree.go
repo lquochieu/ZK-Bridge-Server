@@ -62,12 +62,12 @@ func GetDepositTreeInput(path string, transaction Transaction) DepositRootCosmos
 
 
 	txs := TxHashToBytes(blockDepositRootCosmos.Txs)
-	fmt.Println("Txs ???", txs)
+	// fmt.Println("Txs ???", txs)
 	txBzs := make([][]byte, len(txs))
 	for i := 0; i < len(txs); i++ {
 		txBzs[i] = txs[i].Hash()
+		// fmt.Println(txBzs[i])
 	}
-
 	root := merkle.HashFromByteSlices(txBzs)
 	
 	proof := txs.Proof(key)
@@ -78,6 +78,12 @@ func GetDepositTreeInput(path string, transaction Transaction) DepositRootCosmos
 			siblings = append(siblings, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 		}
 	}
+
+	sib := make([][]byte, len(siblings))
+	for i := 0; i < len(siblings); i++ {
+		sib[i] = siblings[len(siblings) - 1 - i]
+	}
+
 	dataHash := root
 
 	txBody := First(transaction.Body.Marshal())
@@ -101,7 +107,7 @@ func GetDepositTreeInput(path string, transaction Transaction) DepositRootCosmos
 		Signatures: First(SignatureMarshal(transaction)),
 		Key: key,
 		DataHash: dataHash,
-		Siblings: siblings,
+		Siblings: sib,
 	}
 	return depositRootCosmos
 }

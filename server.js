@@ -54,7 +54,7 @@ const job = cron.schedule(" * */2 * * * *", async() => { // runs every 2 minutes
 //     job.start();
 // }, 1000 * 60 * 2);
 
-const MONGODB_URL = process.env.MONGODB_URL ?? 'mongodb://localhost:27017/ZK_BRIDGE';
+const MONGODB_URL = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/ZK_BRIDGE';
 
 mongoose.connect(MONGODB_URL, { 
 	useNewUrlParser: true,

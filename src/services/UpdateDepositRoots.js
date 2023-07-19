@@ -82,14 +82,14 @@ const getInputUpdateDepositTree = () => {
         proof.push(proofFile.pi_a[i]);
     }
     for (let i = 0; i < 2; i++) {
-        for (let j = 1; j >= 0; j--) {
+        for (let j = 0; j < 2; j++) {
             proof.push(proofFile.pi_b[i][j]);
         }
     }
     for (let i = 0; i < 2; i++) {
         proof.push(proofFile.pi_c[i]);
     }
-
+    
     let msg = {
         update_deposit_tree: {
             root: publicFile[publicFile.length - 1],
@@ -108,7 +108,7 @@ const saveJsonData = (path, data) => {
 const QueryTxByHash = async(txHash) => {
     // console.log(resInitiate)
     // console.log(wasmCode)
-    let res = await axios.get(geupdateDepositRootToCosmosBridgetTxAPI + "tx/v1beta1/txs/" + txHash).then( (response) => {
+    let res = await axios.get(getTxAPI + "tx/v1beta1/txs/" + txHash).then( (response) => {
         // handle success
         return { tx: response.data.tx, height: response.data.tx_response.height }
         // console.dir(response.data.tx, { depth: null });
@@ -207,15 +207,15 @@ exports.updateDepositRootToCosmosBridge = async() => {
     console.log(resQueryValidatorsSet)
     saveJsonData(`${path}/validators.json`, resQueryValidatorsSet);
     const resQueryBlockHeaderCommit = await QueryBlockHeaderCommitByHeight(resQueryDepositRootTx.height);
-    saveJsonData(`${path}/block_header_commit.json`);
+    saveJsonData(`${path}/block_header_commit.json`, resQueryBlockHeaderCommit.signed_header);
 }
 
 exports.bridgeBlockHeader = async() => {
     execSync(`cd go/verifyBlock/ && go run .`);
-    execSync(`cd python/ && python ed25519.py`);
+    execSync(`cd python/ && python3.8 ed25519.py`);
     execSync(`node circom/validator/genBlockHeaderInput.js`);
     execSync(`cd circom/circuit/validators/validators-testnet/verifyblockheader_js && node generate_witness.js ./*.wasm ../input.json ../witness.wtns`);
-    execSync(`cd circom/circuit/validators/validators-testnet/verifyblockheader_js && ../../../../rapidsnark/build/prover ../circuit_final.zkey ../witness.wtns ../../../../resources/cosmosHeader/proof.json ../../../../resources/cosmosHeader/public.json`);
+    execSync(`cd circom/circuit/validators/validators-testnet/verifyblockheader_js && ../../../../../rapidsnark/build/prover ../circuit_final.zkey ../witness.wtns ../../../../../resources/cosmosHeader/proof.json ../../../../../resources/cosmosHeader/public.json`);
     execSync(`node solidity/scripts/sdk/examples/updateBlockHeaderTestnet.js`);
 }
 
