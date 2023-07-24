@@ -103,21 +103,27 @@
                 }
             }
         },
-        "/api/infor/{address}": {
+        "/api/infor": {
             "get": {
                 "summary": "Gen proof",
                 "description": "Gen proof",
                 "parameters": [
                     {
-                        "name": "address",
-                        "in": "path",
-                        "description": "address",
-                        "required": true,
+                        "name": "sender",
+                        "in": "query",
+                        "description": "sender",
                         "schema": {
-                            "type": "string",
-                            "example": "1"
+                            "type": "string"
                         }
-                    }
+                    },
+                    {
+                      "name": "receiver",
+                      "in": "query",
+                      "description": "receiver",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
                 ],
                 "responses": {
                     "200": {

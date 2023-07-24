@@ -41,7 +41,7 @@ async function supportTokenPair() {
     const contractAddress = process.env.COSMOS_BRIDGE || "";
     const msg = {
         support_token_pair: {
-            destination_chainid: 97,
+            destination_chainid: Number(process.env.ETH_CHAIN_ID),
             cosmos_token_address: process.env.COSMOS_TOKEN,
             eth_token_address: hexToDecimal(process.env.ETH_TOKEN)
         }

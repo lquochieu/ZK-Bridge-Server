@@ -5,17 +5,17 @@ const { generateUserProof } = require("../services/GenerateUserProof");
 const { queryDepositQueue } = require("../services/QueryDepositQueue");
 const { updateDepositRootToCosmosBridge, bridgeBlockHeader, generateProofEth, updateDepositRootOnEth } = require("../services/UpdateDepositRoots");
 
-exports.queryDepositQueue = async(req, res) => {
+exports.queryDepositQueue = async (req, res) => {
     try {
         const response = await queryDepositQueue();
         res.status(200).send(response);
     } catch (err) {
         console.log(err);
-        res.status(500).send({err: err.toString()});
+        res.status(500).send({ err: err.toString() });
     }
 }
 
-exports.updateRootDeposit = async(req, res) => {
+exports.updateRootDeposit = async (req, res) => {
     try {
         await queryDepositQueue();
         await generateProofUpdateRoot();
@@ -26,35 +26,56 @@ exports.updateRootDeposit = async(req, res) => {
         res.status(200).send({});
     } catch (err) {
         console.log(err);
-        res.status(500).send({err: err.toString()});
+        res.status(500).send({ err: err.toString() });
     }
 }
 
-exports.genereateUserProof = async(req, res) => {
+exports.genereateUserProof = async (req, res) => {
     try {
-        const {key} = req.params;
+        const { key } = req.params;
         if (key == null) {
-            throw("Invalid key");
+            throw ("Invalid key");
         }
         const response = await generateUserProof(Number(key));
         res.status(200).send(response);
     } catch (err) {
         console.log(err);
-        res.status(500).send({err: err.toString()});
+        res.status(500).send({ err: err.toString() });
     }
 }
 
-exports.queryDepositInforByUserAddress = async(req, res) => {
+exports.queryDepositInforByUserAddress = async (req, res) => {
     try {
-        const {address} = req.params;
-        if (address == null) {
-            throw("Invalid key");
+        let { sender, receiver } = req.query;
+        if (sender == null) {
+            sender = "";
         }
-        const response = await DepositInfor.find({sender: address});
+        if (receiver == null) {
+            receiver = "";
+        }
+        if (sender != "") {
+            sender = sender.toLowerCase();
+        }
+        if (receiver != "") {
+            receiver = receiver.toLowerCase();
+            if (receiver[1] != 'x')
+                receiver = "0x" + receiver;
+            receiver = BigInt(receiver).toString(10);
+        }
+        let response = [];
+        if (receiver == "") {
+            response = await DepositInfor.find({ sender: sender });
+        } else {
+            if (sender == "") {
+                response = await DepositInfor.find({ eth_receiver: receiver });
+            } else {
+                response = await DepositInfor.find({ sender: sender, eth_receiver: receiver });
+            }
+        }
         res.status(200).send(response);
     } catch (err) {
         console.log(err);
-        res.status(500).send({err: err.toString()});
+        res.status(500).send({ err: err.toString() });
     }
 }
 
@@ -72,7 +93,7 @@ exports.cronjobUpdate = async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(500).send({err: err.toString()});
+        res.status(500).send({ err: err.toString() });
 
     }
 }
@@ -82,11 +103,11 @@ exports.deleteDb = async (req, res) => {
         await DepositInfor.remove({});
         await DepositTree.remove({});
         const resposne = await DepositInfor.find();
-        res.status(200).send({resposne});
+        res.status(200).send({ resposne });
 
     } catch (err) {
         console.log(err);
-        res.status(500).send({err: err.toString()});
+        res.status(500).send({ err: err.toString() });
 
     }
 }
