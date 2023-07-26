@@ -138,7 +138,145 @@
                     }
                 }
             }
-        }
+        },
+        "/api/token-pair": {
+          "post": {
+              "tags": [
+                "token-pair"
+              ],
+              "summary": "Add token pair",
+              "description": "add token pair",
+              "requestBody": {
+                "description": "Token pair",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "cosmosTokenAddress": {
+                          "type": "string",
+                          "example": "abc"
+                        },
+                        "ethTokenAddress": {
+                          "type": "string",
+                          "example": "abc"
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "example": "abc"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "responses": {
+                  "200": {
+                    "description": "Success response",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "example": {}
+                        }
+                      }
+                    }
+                  }
+              }
+          },
+          "delete": {
+            "tags": [
+              "token-pair"
+            ],
+            "summary": "Add token pair",
+            "description": "add token pair",
+            "parameters": [
+              {
+                "name": "cosmosTokenAddress",
+                "description": "cosmosTokenAddress",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "ethTokenAddress",
+                "description": "ethTokenAddress",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "symbol",
+                "description": "symbol",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+                "200": {
+                  "description": "Success response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "example": {}
+                      }
+                    }
+                  }
+                }
+            }
+          },
+          "get": {
+            "tags": [
+              "token-pair"
+            ],
+            "summary": "Add token pair",
+            "description": "add token pair",
+            "parameters": [
+              {
+                "name": "cosmosTokenAddress",
+                "description": "cosmosTokenAddress",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "ethTokenAddress",
+                "description": "ethTokenAddress",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "symbol",
+                "description": "symbol",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+                "200": {
+                  "description": "Success response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "example": {}
+                      }
+                    }
+                  }
+                }
+            }
+          }
+      }
     },
     "components": {
         "schemas": {
