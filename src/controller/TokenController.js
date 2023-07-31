@@ -8,9 +8,9 @@ exports.addToken = async (req, res) => {
     try {
         const { cosmosTokenAddress, ethTokenAddress, symbol } = req.body;
         const cosmosTokenAddressInEth = getAddresFromAsciiString(cosmosTokenAddress);
-        // const ethToken = await registerTokenPair(cosmosTokenAddressInEth, ethTokenAddress);
-        // console.log(ethToken);
-        // await supportTokenPair(cosmosTokenAddress, ethTokenAddress);
+        const ethToken = await registerTokenPair(cosmosTokenAddressInEth, ethTokenAddress);
+        console.log(ethToken);
+        await supportTokenPair(cosmosTokenAddress, ethTokenAddress);
 
         const tokenPair = new TokenPair({
             cosmosTokenAddress: cosmosTokenAddress,
