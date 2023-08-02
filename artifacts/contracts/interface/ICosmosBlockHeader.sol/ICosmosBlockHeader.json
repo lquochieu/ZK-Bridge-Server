@@ -14,9 +14,9 @@
       "name": "getBlockHash",
       "outputs": [
         {
-          "internalType": "uint160",
+          "internalType": "bytes20",
           "name": "",
-          "type": "uint160"
+          "type": "bytes20"
         }
       ],
       "stateMutability": "view",
@@ -27,9 +27,9 @@
       "name": "getCurrentBlockHash",
       "outputs": [
         {
-          "internalType": "uint160",
+          "internalType": "bytes20",
           "name": "",
-          "type": "uint160"
+          "type": "bytes20"
         }
       ],
       "stateMutability": "view",
@@ -53,9 +53,9 @@
       "name": "getCurrentDataHash",
       "outputs": [
         {
-          "internalType": "uint160",
+          "internalType": "bytes20",
           "name": "",
-          "type": "uint160"
+          "type": "bytes20"
         }
       ],
       "stateMutability": "view",
@@ -72,9 +72,9 @@
       "name": "getDataHash",
       "outputs": [
         {
-          "internalType": "uint160",
+          "internalType": "bytes20",
           "name": "",
-          "type": "uint160"
+          "type": "bytes20"
         }
       ],
       "stateMutability": "view",
@@ -88,9 +88,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint160",
+          "internalType": "bytes20",
           "name": "blockHash",
-          "type": "uint160"
+          "type": "bytes20"
         }
       ],
       "name": "updateBlockHash",
@@ -106,9 +106,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint160",
+          "internalType": "bytes20",
           "name": "dataHash",
-          "type": "uint160"
+          "type": "bytes20"
         }
       ],
       "name": "updateDataHash",

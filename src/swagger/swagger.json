@@ -1,0 +1,286 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "ZK Bridge Server",
+        "description": "List api for ZK Bridge Server",
+        "version": "1.0"
+    },
+    "tags": [
+    ],
+    "paths": {
+        "/api/query": {
+            "get": {
+                "summary": "Query",
+                "description": "Query",
+                "responses": {
+                    "200": {
+                      "description": "Success response",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "object",
+                            "example": {}
+                          }
+                        }
+                      }
+                    }
+                }
+            }
+        },
+        "/api/db": {
+          "delete": {
+              "summary": "Delete db",
+              "description": "Delete db",
+              "responses": {
+                  "200": {
+                    "description": "Success response",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "example": {}
+                        }
+                      }
+                    }
+                  }
+              }
+          }
+      },
+        "/api/update": {
+            "put": {
+                "summary": "Gen proof",
+                "description": "Gen proof",
+                "responses": {
+                    "200": {
+                      "description": "Success response",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "object",
+                            "example": {}
+                          }
+                        }
+                      }
+                    }
+                }
+            }
+        },
+        "/api/proof/{key}": {
+            "get": {
+                "summary": "Gen proof",
+                "description": "Gen proof",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "Key",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                      "description": "Success response",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "object",
+                            "properties": {
+                                "proof": {
+                                    "type": "object"
+                                },
+                                "public": {
+                                    "type": "array"
+                                }
+                            }
+                          }
+                        }
+                      }
+                    }
+                }
+            }
+        },
+        "/api/infor": {
+            "get": {
+                "summary": "Gen proof",
+                "description": "Gen proof",
+                "parameters": [
+                    {
+                        "name": "sender",
+                        "in": "query",
+                        "description": "sender",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                      "name": "receiver",
+                      "in": "query",
+                      "description": "receiver",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+                ],
+                "responses": {
+                    "200": {
+                      "description": "Success response",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "type": "array"
+                          }
+                        }
+                      }
+                    }
+                }
+            }
+        },
+        "/api/token-pair": {
+          "post": {
+              "tags": [
+                "token-pair"
+              ],
+              "summary": "Add token pair",
+              "description": "add token pair",
+              "requestBody": {
+                "description": "Token pair",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "cosmosTokenAddress": {
+                          "type": "string",
+                          "example": "abc"
+                        },
+                        "ethTokenAddress": {
+                          "type": "string",
+                          "example": "abc"
+                        },
+                        "symbol": {
+                          "type": "string",
+                          "example": "abc"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "responses": {
+                  "200": {
+                    "description": "Success response",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "object",
+                          "example": {}
+                        }
+                      }
+                    }
+                  }
+              }
+          },
+          "delete": {
+            "tags": [
+              "token-pair"
+            ],
+            "summary": "Add token pair",
+            "description": "add token pair",
+            "parameters": [
+              {
+                "name": "cosmosTokenAddress",
+                "description": "cosmosTokenAddress",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "ethTokenAddress",
+                "description": "ethTokenAddress",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "symbol",
+                "description": "symbol",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+                "200": {
+                  "description": "Success response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "example": {}
+                      }
+                    }
+                  }
+                }
+            }
+          },
+          "get": {
+            "tags": [
+              "token-pair"
+            ],
+            "summary": "Add token pair",
+            "description": "add token pair",
+            "parameters": [
+              {
+                "name": "cosmosTokenAddress",
+                "description": "cosmosTokenAddress",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "ethTokenAddress",
+                "description": "ethTokenAddress",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "symbol",
+                "description": "symbol",
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+                "200": {
+                  "description": "Success response",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "example": {}
+                      }
+                    }
+                  }
+                }
+            }
+          }
+      }
+    },
+    "components": {
+        "schemas": {
+
+        }
+    }
+}

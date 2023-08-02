@@ -84,7 +84,7 @@ function getInputUpdateDepositTree() {
         proof.push(proofFile.pi_a[i]);
     }
     for (let i = 0; i < 2; i++) {
-        for (let j = 1; j >= 0; j--) {
+        for (let j = 0; j < 2; j++) {
             proof.push(proofFile.pi_b[i][j]);
         }
     }

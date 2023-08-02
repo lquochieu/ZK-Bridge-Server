@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
+	//"fmt"
 
 	"strconv"
 	//"bytes"
@@ -96,7 +96,7 @@ func (m *Body) Marshal() (dAtA []byte, err error) {
 	_ = i
 	var l int
 	_ = l
-	fmt.Println(i)
+	// fmt.Println(i)
 			
 	if &m != nil {
 		{
@@ -459,7 +459,7 @@ func (m *Message) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if len(m.Contract) > 0 {
 		i -= len(m.Contract)
 		copy(dAtA[i:], []byte(m.Contract))
-		fmt.Println("Contract", []byte(m.Contract))
+		// fmt.Println("Contract", []byte(m.Contract))
 
 		i = EncodeVarintTx(dAtA, i, uint64(len(m.Contract)))
 		i--
@@ -472,7 +472,7 @@ func (m *Message) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if len(m.Sender) > 0 {
 		i -= len(m.Sender)
 		copy(dAtA[i:], []byte(m.Sender))
-		fmt.Println("Sender", []byte(m.Sender))
+		// fmt.Println("Sender", []byte(m.Sender))
 		i = EncodeVarintTx(dAtA, i, uint64(len(m.Sender)))
 		i--
 		dAtA[i] = 0xa
@@ -909,7 +909,10 @@ func (m *Amount) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-
+type TxData struct {
+	Transaction Transaction `json:"tx"`
+	Height string `json:"height"`
+}
 
 type Transaction struct {
 	Body       Body     `json:"body"`
@@ -969,43 +972,43 @@ type Amount struct {
 	Amount string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount"`
 }
 
-type Transaction_Json struct {
-	Body       Body_Json     `json:"body"`
-	AuthInfo   AuthInfo_Json `json:"auth_info"`
+type TxData_Json struct {
+	Tx     Tx_Json `json:"tx"`
+	Height string  `json:"height"`
+}
+
+type Tx_Json struct {
+	Body       Body_Json   `json:"body"`
+	AuthInfo   Auth_Json   `json:"auth_info"`
 	Signatures []string `json:"signatures"`
 }
 
 type Body_Json struct {
-	Messages                    []Message_Json `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages"`
-	Memo                        string    `protobuf:"bytes,2,opt,name=memo,proto3" json:"memo"`
-	TimeoutHeight               string    `protobuf:"bytes,3,opt,name=timeout_height,proto3" json:"timeout_height"`
-	ExtensionOptions            []string  `protobuf:"bytes,1023,rep,name=extensionOptions,proto3" json:"extension_options"`
-	NonCriticalExtensionOptions []string  `protobuf:"bytes,2047,rep,name=non_critical_extension_options,proto3" json:"non_critical_extension_options"`
+	Messages                      []Message_Json `json:"messages"`
+	Memo                          string         `json:"memo"`
+	TimeoutHeight                 string         `json:"timeout_height"`
+	ExtensionOptions              []string       `json:"extension_options"`
+	NonCriticalExtensionOptions   []string       `json:"non_critical_extension_options"`
 }
 
 type Message_Json struct {
-	Type     string `protobuf:"bytes,1,opt,name=type,proto3" json:"@type"`
-	Sender   string `protobuf:"bytes,2,opt,name=sender,proto3" json:"sender"`
-	Contract string `protobuf:"bytes,3,opt,name=contract,proto3" json:"contract"`
-	Msg      Msg_Json `protobuf:"bytes,4,opt,name=msg,proto3" json:"msg"`
-	Funds    []Amount_Json `protobuf:"bytes,5,rep,name=funds,proto3" json:"funds"`
+	Type     string `json:"@type"`
+	Sender   string `json:"sender"`
+	Contract string `json:"contract"`
+	Msg      Msg_Json `json:"msg"`
+	Funds    []Amount_Json `json:"funds"`
 }
 
 type Msg_Json struct {
-	Update_deposit_tree Update_deposit_tree_Json  `protobuf:"bytes,1,opt,name=update_deposit_tree,proto3" json:"update_deposit_tree"`
+	UpdateDepositTree UpdateDepositTree_Json `json:"update_deposit_tree"`
 }
 
-type Update_deposit_tree_Json struct {
-	Root string  `protobuf:"bytes,2,opt,name=root,proto3" json:"root"`
-	Proof []string  `protobuf:"int,1,opt,name=proof,proto3" json:"proof"`
+type UpdateDepositTree_Json struct {
+	Root  string   `json:"root"`
+	Proof []string `json:"proof"`
 }
 
-type Preference_executor_fee_Json struct {
-	Denom string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom"`
-	Amount string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount"`
-}
-
-type AuthInfo_Json struct {
+type Auth_Json struct {
 	SignerInfos []SignerInfo_Json `json:"signer_infos"`
 	Fee         Fee_Json          `json:"fee"`
 }
@@ -1013,7 +1016,7 @@ type AuthInfo_Json struct {
 type SignerInfo_Json struct {
 	PublicKey PublicKey_Json `json:"public_key"`
 	ModeInfo  ModeInfo_Json  `json:"mode_info"`
-	Sequence  string    `json:"sequence"`
+	Sequence  string         `json:"sequence"`
 }
 
 type PublicKey_Json struct {
@@ -1022,31 +1025,31 @@ type PublicKey_Json struct {
 }
 
 type ModeInfo_Json struct {
-	Single Single_Json `json:"single"`
+	Single SingleMode_Json `json:"single"`
 }
 
-type Single_Json struct {
+type SingleMode_Json struct {
 	Mode string `json:"mode"`
 }
 
 type Fee_Json struct {
-	Amount   []Amount_Json `json:"amount"`
-	GasLimit string `json:"gas_limit"`
-	Payer    string `json:"payer"`
-	Granter  string `json:"granter"`
+	Amount     []Amount_Json `json:"amount"`
+	GasLimit   string        `json:"gas_limit"`
+	Payer      string        `json:"payer"`
+	Granter    string        `json:"granter"`
 }
 
 type Amount_Json struct {
-	Denom  string `protobuf:"bytes,1,opt,name=denom,proto3" json:"denom"`
-	Amount string `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount"`
+	Denom  string `json:"denom"`
+	Amount string `json:"amount"`
 }
-func GetTx(transaction_path string) Transaction {
-	var transaction Transaction_Json
-	json.Unmarshal(GetBytesFileJson(transaction_path), &transaction)
-	// transaction.Body.Messages[0].Msg = `{"request":{"threshold":2,"service":"orchai_price","preference_executor_fee":{"denom":"orai","amount":"0"}}}`
-	
-	var message []Message
 
+func GetTx(transaction_path string) Transaction {
+	var txData TxData_Json
+	json.Unmarshal(GetBytesFileJson(transaction_path), &txData)
+	// transaction.Body.Messages[0].Msg = `{"request":{"threshold":2,"service":"orchai_price","preference_executor_fee":{"denom":"orai","amount":"0"}}}`
+	var transaction = txData.Tx
+	var message []Message
 	for i := 0; i < len(transaction.Body.Messages); i++ {
 		//msg := string(First(json.Marshal(transaction.Body.Messages[i].Msg)))
 		var fund []Amount
@@ -1114,10 +1117,11 @@ func GetTx(transaction_path string) Transaction {
 }
 
 func GetTxByTxJson(transaction_path string) Transaction {
-	var transaction Transaction_Json
-	json.Unmarshal(GetBytesFileJson(transaction_path), &transaction)
+	var txData TxData
+	json.Unmarshal(GetBytesFileJson(transaction_path), &txData)
 	// transaction.Body.Messages[0].Msg = `{"request":{"threshold":2,"service":"orchai_price","preference_executor_fee":{"denom":"orai","amount":"0"}}}`
-	
+	var transaction = txData.Transaction
+
 	var message []Message
 
 	for i := 0; i < len(transaction.Body.Messages); i++ {

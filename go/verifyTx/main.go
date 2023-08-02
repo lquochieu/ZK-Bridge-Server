@@ -1,12 +1,12 @@
 package main
 
 import (
-	//"github.com/tendermint/tendermint/crypto/tmhash"
+	"github.com/tendermint/tendermint/crypto/tmhash"
 	"encoding/json"
-	//"fmt"
+	"fmt"
 	"io/ioutil"
 	"os"
-	"strconv"
+	//"strconv"
 	"encoding/base64"
 	types "github.com/tendermint/tendermint/types"
 )
@@ -56,22 +56,20 @@ func First[T, U any](val T, _ U) T {
 
 func main() {
 
-	validatorsSet := GetValidatorsSet("../../resources/updateRootDepositToCosmosBridge/validators1")
+	// validatorsSet := GetValidatorsSet("../../resources/updateRootDepositToCosmosBridge/validators1")
 
-	block_header_commit := GetBlockHeader("../../resources/updateRootDepositToCosmosBridge/block_header_commit")
+	// block_header_commit := GetBlockHeader("../../resources/updateRootDepositToCosmosBridge/block_header_commit")
 
-	verifySignaturesInput := GenValidatorSignaturesInput(validatorsSet, block_header_commit)
+	// verifySignaturesInput := GenValidatorSignaturesInput(validatorsSet, block_header_commit)
 
-	for i := 0; i < len(verifySignaturesInput); i++ {
-		SaveVerifySignatureInputToJsonFile(verifySignaturesInput[i], "./verifySignatures/input" + strconv.Itoa(i) )
-	}
+	// for i := 0; i < len(verifySignaturesInput); i++ {
+	// 	SaveVerifySignatureInputToJsonFile(verifySignaturesInput[i], "./verifySignatures/input" + strconv.Itoa(i) )
+	// }
 
-	// txs := GetTx("../../resources/updateRootDepositToCosmosBridge/tx_data")
-	// // fmt.Println("sender", tmhash.Sum([]byte(txs.Body.Messages[0].Sender))[:20])
+	txs := GetTx("../../resources/updateRootDepositToCosmosBridge/tx_data")
+	// fmt.Println("sender", tmhash.Sum([]byte(txs.Body.Messages[0].Sender))[:20])
+	input := GetDepositTreeInput("../../resources/updateRootDepositToCosmosBridge/block", txs)
 
-	// input := GetDepositTreeInput("../../resources/updateRootDepositToCosmosBridge/block_header", txs)
-
-	// SaveDepositRootToJsonFile(input, "../../resources/updateRootDepositToEthBridge/input_go")
-	// fmt.Println("txs", input);
-	// fmt.Printf("decode string  %x\n", tmhash.Sum(First(txs.Marshal())))
+	SaveDepositRootToJsonFile(input, "../../resources/updateRootDepositToEthBridge/input_go")
+	fmt.Printf("decode string %x\n", tmhash.Sum(First(txs.Marshal())))
 }

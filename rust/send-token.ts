@@ -8,6 +8,18 @@ dotenv.config();
 const rpcEndpoint = "https://testnet-rpc.orai.io:443/";
 const mnemonic = process.env.MNEMONIC_COSMOS!;
 
+function hexToDecimal(hex: string): string {
+    // Remove the '0x' prefix if present
+    if (hex.startsWith('0x')) {
+        hex = hex.slice(2);
+    }
+
+    // Convert the hexadecimal string to a decimal string
+    const decimalString = BigInt(`0x${hex}`).toString();
+
+    return decimalString;
+}
+
 async function getWallet(): Promise<Secp256k1HdWallet> {
     const wallet = await Secp256k1HdWallet.fromMnemonic(mnemonic, { prefix: "orai" });
     return wallet;
@@ -33,15 +45,18 @@ async function getClient(): Promise<SigningCosmWasmClient> {
 
 
 async function sendToken(amount: String) {
+    // const query = await client.getTx("2D925C0F81EF1E26662B0A2A9277180CE853F9F07C60CA2F3E64E7F565A19F78")
     const wallet = await getWallet();
     const client = await getClient();
 
     const senderAddress = (await wallet.getAccounts())[0].address;
     const contractAddress = process.env.COSMOS_TOKEN || "";
     const msg_bridge = {
-        eth_bridge_address: process.env.ORAISAN_BRIDGE,
-        eth_receiver: process.env.PUBLIC_KEY
+        destination_chainid: Number(process.env.ETH_CHAIN_ID),
+        eth_bridge_address: hexToDecimal(process.env.ORAISAN_BRIDGE),
+        eth_receiver: hexToDecimal(process.env.PUBLIC_KEY)
     }
+    console.log("binary", toBinary(msg_bridge));
     const msg = {
         send: {
             contract: process.env.COSMOS_BRIDGE || "",

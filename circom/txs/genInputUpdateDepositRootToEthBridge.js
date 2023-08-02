@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { saveJsonData, base64ToBytes } = require("./helper");
+const { saveJsonData, base64ToBytes } = require("../helper");
 const input_go = require("../../resources/updateRootDepositToEthBridge/input_go.json")
 
 const main = async () => {

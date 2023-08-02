@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { addLeaf, getTree, initialize, hash, getSiblings } = require("./fmt");
-const { readJSONFilesInFolder, getAddresFromAsciiString, saveJsonData } = require("./helper");
+const { readJSONFilesInFolder, getAddresFromAsciiString, saveJsonData } = require("../helper");
 
 const range = (start, stop, step) =>
     Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
@@ -10,13 +10,13 @@ const main = async () => {
     await initialize();
     const tree = getTree();
     let data = readJSONFilesInFolder("./circom/txs/depositInfo");
-    
+
     let n_leafs = depositTree.n_leafs;
     let nqueue_leafs = depositTree.nqueue_leafs
     let nmax_leafs_update = 5;
 
-    const newValue = Array.from(data, (data) => hash([data.eth_bridge_address, data.eth_receiver, data.amount, getAddresFromAsciiString(data.cosmos_token_address), data.key]));
-
+    const newValue = Array.from(data, (data) => hash([data.eth_bridge_address, data.eth_receiver, data.amount, data.eth_token_address]));
+    console.log("----new---\n", newValue, "\n-----")
     for (i = nqueue_leafs; i < nmax_leafs_update; i++) {
         newValue.push(hash([0]));
     }
@@ -25,7 +25,7 @@ const main = async () => {
         tree.update(i, newValue[i]);
     }
 
-    if(n_leafs == 0) {
+    if (n_leafs == 0) {
         tree.update(0, hash([0]));
     }
 
@@ -34,7 +34,6 @@ const main = async () => {
     const siblings = [];
     console.log(newValue);
     for (let i = n_leafs; i < n_leafs + nmax_leafs_update; i++) {
-        console.log(i, newValue[i])
         tree.update(i, newValue[i]);
         siblings.push(getSiblings(i));
     }
@@ -42,12 +41,12 @@ const main = async () => {
 
     const input = {
         key: range(n_leafs, n_leafs + nmax_leafs_update, 1),
-        newValue: newValue.map(e => e.toString()).slice(n_leafs, n_leafs +  nmax_leafs_update),
+        newValue: newValue.map(e => e.toString()).slice(n_leafs, n_leafs + nmax_leafs_update),
         oldRoot: oldRoot,
         siblings: siblings.map(sib => sib.map(e => e.toString())),
         newRoot: newRoot,
     };
-    
+
     saveJsonData("./circom/circuit/verifyRootBatchTxsCosmos/input.json", input)
 };
 
