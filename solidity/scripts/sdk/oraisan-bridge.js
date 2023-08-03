@@ -3,6 +3,27 @@ const { rdOwnerOraisanBridge } = require("./rdOwner");
 const { getProofUpdateRootDeposit, getProofClaimTransaction } = require("../utils/getProof");
 require("dotenv").config();
 
+const isSentProof = async (
+    eth_bridge_address,
+    eth_receiver,
+    amount,
+    eth_token_address,
+    key
+) => {
+    const rdOwner = await rdOwnerOraisanBridge();
+    const msg = await rdOwner.encodeProof(
+        eth_bridge_address,
+        eth_receiver,
+        amount,
+        eth_token_address,
+        key
+    );
+    const hash = ethers.utils.keccak256(msg);
+    console.log("hash", hash)
+    return await rdOwner.sentProof(hash);
+}
+exports.isSentProof = isSentProof;
+
 const registerCosmosBridge = async (_cosmosTokenAddress, _ethTokenAddress) => {
     const rdOwner = await rdOwnerOraisanBridge();
     const res = await rdOwner.registerCosmosBridge(_cosmosTokenAddress, _ethTokenAddress);
