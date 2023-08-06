@@ -82,10 +82,10 @@ exports.queryDepositInforByUserAddress = async (req, res) => {
 exports.cronjobUpdate = async (req, res) => {
     try {
         console.log("------------cronjob auto update------------")
-        // await queryDepositQueue();
-        // await generateProofUpdateRoot();
-        // await updateDepositRootToCosmosBridge();
-        // await bridgeBlockHeader();
+        await queryDepositQueue();
+        await generateProofUpdateRoot();
+        await updateDepositRootToCosmosBridge();
+        await bridgeBlockHeader();
         await generateProofEth();
         await updateDepositRootOnEth();
         console.log("------------cronjob end update-------------")
