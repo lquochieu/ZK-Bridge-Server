@@ -10,6 +10,11 @@ const isSentProof = async (
     eth_token_address,
     key
 ) => {
+    console.log("eth_bridge_address", eth_bridge_address)
+    console.log("eth_receiver", eth_receiver)
+    console.log("amount", amount)
+    console.log("eth_token_address", eth_token_address)
+    console.log("key", key)
     const rdOwner = await rdOwnerOraisanBridge();
     const msg = await rdOwner.encodeProof(
         eth_bridge_address,
@@ -18,6 +23,7 @@ const isSentProof = async (
         eth_token_address,
         key
     );
+    console.log("msg", msg)
     return await rdOwner.sentProof(msg);
 }
 exports.isSentProof = isSentProof;
