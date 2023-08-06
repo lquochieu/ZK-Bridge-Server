@@ -1,4 +1,5 @@
 const { isSentProof } = require("../../solidity/scripts/sdk/oraisan-bridge");
+const {convertHexStringToAddress, bigNumberToHexString} = require("../../solidity/scripts/utils/helper");
 const DepositInfor = require("../models/DepositInfor");
 const DepositTree = require("../models/DepositTree");
 const { generateProofUpdateRoot } = require("../services/GenerateProofUpdateRoot");
@@ -116,10 +117,10 @@ exports.queryDepositInforByUserAddress = async (req, res) => {
 exports.cronjobUpdate = async (req, res) => {
     try {
         console.log("------------cronjob auto update------------")
-        // await queryDepositQueue();
-        // await generateProofUpdateRoot();
-        // await updateDepositRootToCosmosBridge();
-        // await bridgeBlockHeader();
+        await queryDepositQueue();
+        await generateProofUpdateRoot();
+        await updateDepositRootToCosmosBridge();
+        await bridgeBlockHeader();
         await generateProofEth();
         await updateDepositRootOnEth();
         console.log("------------cronjob end update-------------")

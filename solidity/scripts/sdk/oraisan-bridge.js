@@ -18,9 +18,7 @@ const isSentProof = async (
         eth_token_address,
         key
     );
-    const hash = ethers.utils.keccak256(msg);
-    console.log("hash", hash)
-    return await rdOwner.sentProof(hash);
+    return await rdOwner.sentProof(msg);
 }
 exports.isSentProof = isSentProof;
 
