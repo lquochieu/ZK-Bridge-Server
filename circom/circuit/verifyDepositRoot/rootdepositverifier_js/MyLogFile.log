@@ -433,3 +433,61 @@ Wed Aug  2 04:18:27 2023  [TRACE]: Start Multiexp A
 Wed Aug  2 04:18:27 2023  [TRACE]: Start Multiexp B1
 Wed Aug  2 04:18:28 2023  [TRACE]: Start Multiexp B2
 Wed Aug  2 04:18:28 2023  [TRACE]: Start Multiexp C
+Mon Aug  7 10:58:19 2023  [TRACE]: Start Initializing a b c A
+Mon Aug  7 10:58:19 2023  [TRACE]: Processing coefs
+Mon Aug  7 10:58:19 2023  [TRACE]: Calculating c
+Mon Aug  7 10:58:19 2023  [TRACE]: Initializing fft
+Mon Aug  7 10:58:19 2023  [TRACE]: Start iFFT A
+Mon Aug  7 10:58:19 2023  [TRACE]: a After ifft:
+Mon Aug  7 10:58:19 2023  [TRACE]: Start Shift A
+Mon Aug  7 10:58:19 2023  [TRACE]: a After shift:
+Mon Aug  7 10:58:19 2023  [TRACE]: Start FFT A
+Mon Aug  7 10:58:19 2023  [TRACE]: a After fft:
+Mon Aug  7 10:58:19 2023  [TRACE]: Start iFFT B
+Mon Aug  7 10:58:19 2023  [TRACE]: b After ifft:
+Mon Aug  7 10:58:19 2023  [TRACE]: Start Shift B
+Mon Aug  7 10:58:19 2023  [TRACE]: b After shift:
+Mon Aug  7 10:58:19 2023  [TRACE]: Start FFT B
+Mon Aug  7 10:58:19 2023  [TRACE]: b After fft:
+Mon Aug  7 10:58:19 2023  [TRACE]: Start iFFT C
+Mon Aug  7 10:58:20 2023  [TRACE]: c After ifft:
+Mon Aug  7 10:58:20 2023  [TRACE]: Start Shift C
+Mon Aug  7 10:58:20 2023  [TRACE]: c After shift:
+Mon Aug  7 10:58:20 2023  [TRACE]: Start FFT C
+Mon Aug  7 10:58:20 2023  [TRACE]: c After fft:
+Mon Aug  7 10:58:20 2023  [TRACE]: Start ABC
+Mon Aug  7 10:58:20 2023  [TRACE]: abc:
+Mon Aug  7 10:58:20 2023  [TRACE]: Start Multiexp H
+Mon Aug  7 10:58:21 2023  [TRACE]: Start Multiexp A
+Mon Aug  7 10:58:21 2023  [TRACE]: Start Multiexp B1
+Mon Aug  7 10:58:21 2023  [TRACE]: Start Multiexp B2
+Mon Aug  7 10:58:22 2023  [TRACE]: Start Multiexp C
+Mon Aug  7 11:01:53 2023  [TRACE]: Start Initializing a b c A
+Mon Aug  7 11:01:53 2023  [TRACE]: Processing coefs
+Mon Aug  7 11:01:53 2023  [TRACE]: Calculating c
+Mon Aug  7 11:01:53 2023  [TRACE]: Initializing fft
+Mon Aug  7 11:01:53 2023  [TRACE]: Start iFFT A
+Mon Aug  7 11:01:53 2023  [TRACE]: a After ifft:
+Mon Aug  7 11:01:53 2023  [TRACE]: Start Shift A
+Mon Aug  7 11:01:53 2023  [TRACE]: a After shift:
+Mon Aug  7 11:01:53 2023  [TRACE]: Start FFT A
+Mon Aug  7 11:01:54 2023  [TRACE]: a After fft:
+Mon Aug  7 11:01:54 2023  [TRACE]: Start iFFT B
+Mon Aug  7 11:01:54 2023  [TRACE]: b After ifft:
+Mon Aug  7 11:01:54 2023  [TRACE]: Start Shift B
+Mon Aug  7 11:01:54 2023  [TRACE]: b After shift:
+Mon Aug  7 11:01:54 2023  [TRACE]: Start FFT B
+Mon Aug  7 11:01:54 2023  [TRACE]: b After fft:
+Mon Aug  7 11:01:54 2023  [TRACE]: Start iFFT C
+Mon Aug  7 11:01:54 2023  [TRACE]: c After ifft:
+Mon Aug  7 11:01:54 2023  [TRACE]: Start Shift C
+Mon Aug  7 11:01:54 2023  [TRACE]: c After shift:
+Mon Aug  7 11:01:54 2023  [TRACE]: Start FFT C
+Mon Aug  7 11:01:54 2023  [TRACE]: c After fft:
+Mon Aug  7 11:01:54 2023  [TRACE]: Start ABC
+Mon Aug  7 11:01:54 2023  [TRACE]: abc:
+Mon Aug  7 11:01:54 2023  [TRACE]: Start Multiexp H
+Mon Aug  7 11:01:55 2023  [TRACE]: Start Multiexp A
+Mon Aug  7 11:01:55 2023  [TRACE]: Start Multiexp B1
+Mon Aug  7 11:01:55 2023  [TRACE]: Start Multiexp B2
+Mon Aug  7 11:01:56 2023  [TRACE]: Start Multiexp C

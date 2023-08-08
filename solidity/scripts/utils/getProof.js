@@ -74,6 +74,7 @@ const getProofUpdateRootDeposit = (pathInput, pathProof) => {
         depositRoot: inputUpdateDepositRootJson[2],
         dataHash: bigNumberToHexString(inputUpdateDepositRootJson[3])
     };
+    console.log("input proof", inputProof)
     return inputProof;
 }
 exports.getProofUpdateRootDeposit = getProofUpdateRootDeposit;

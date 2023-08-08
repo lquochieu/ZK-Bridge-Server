@@ -1,19 +1,19 @@
 {
- "height": 14334619,
- "dataHash": "Z1Uy2NkgKrLzoWPjE4eWcm3qYP7loumaPJzCz+TDLUk=",
+ "height": 14425358,
+ "dataHash": "EeUlCsZ5Pl5X+Bt4gmVYf+gJOrjozI1I4GflXHkGdAw=",
  "parrentSiblings": [
-  "AO3iw27XrzAOnguQmWRgXEMIi7JQViSpeFiiZ676auo=",
-  "XtBnpJcqGb/6uqkfb6Jy6Cg1w/b7cwa1kKvP8jWMdQQ=",
-  "wiKz9xU7sQ7mSxKhHaHZHMvSEVtafHrcnds2jOd35ZE="
+  "OA9/rV+ykqbJHVAGIWES0Tgoky+Wo+85hidXn1pIgDE=",
+  "ByXyjcrsNk6jVM8tQs4CR0+PbdBfLS9ofkgaVQtdkac=",
+  "geEW9Z3nmElhzJPxQT3MFD5LI3KP4qMxC5EhuU3ZAjI="
  ],
- "blockHash": "SRIcVlT2MNTcUujSZNNbKtuDKVMh4qNSSt2LK/ScLEA=",
- "blockTime": 1690949808442637909,
+ "blockHash": "AHOJRU5PIIRy+1hbk/WJCWgC3j+VKReB6cTcczfO21o=",
+ "blockTime": 1691405747591727267,
  "partsTotal": 1,
- "partsHash": "bIW3WMWBKrtJLBNsy6J4X5jOtz+8J+7TYqIlodTFPV8=",
- "sigTimeSeconds": 1690949813,
- "sigTimeNanos": 466810736,
+ "partsHash": "oqXcV3dmF8xBO4dXARFurVhm2DaVC/QjIDsC1hAikrs=",
+ "sigTimeSeconds": 1691405752,
+ "sigTimeNanos": 612515211,
  "pubKeys": "joRntIHxPf0EBNi42aRUxE+aV6D3cb9DIL3/ijkFCc0=",
- "votingPowers": 25252491,
- "R8": "MscoiHwrbRSUz8FDaRa5jzTbHGOAOjDcf3FArmIH9DE=",
- "S": "rlQOtI40Fv+Dp5DAxLqgQ8b0XWp+xWrbG5XRwFTZ+QY="
+ "votingPowers": 25252908,
+ "R8": "050Susqk1qJXbnSSKOKOkXV7UOUd7ic1PqKkHI9Q76k=",
+ "S": "NKxFXW5BjYKN2Y6zbUFxM0gMoqsnYbyO7D0VSwGaNAI="
 }
