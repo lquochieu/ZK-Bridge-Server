@@ -63,6 +63,7 @@ exports.queryDepositInforByUserAddress = async (req, res) => {
             receiver = BigInt(receiver).toString(10);
         }
         let response = [];
+        let x = [];
         if (receiver == "") {
             response = await DepositInfor.find({ sender: sender });
         } else {
@@ -72,7 +73,10 @@ exports.queryDepositInforByUserAddress = async (req, res) => {
                 response = await DepositInfor.find({ sender: sender, eth_receiver: receiver });
             }
         }
-        res.status(200).send(response);
+        for (let i = 0; i < response.length; i++) {
+            x.push(response[i]);
+        }
+        res.status(200).send(x);
     } catch (err) {
         console.log(err);
         res.status(500).send({ err: err.toString() });
