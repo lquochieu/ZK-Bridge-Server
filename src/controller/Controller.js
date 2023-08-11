@@ -65,6 +65,7 @@ exports.queryDepositInforByUserAddress = async (req, res) => {
             receiver = BigInt(receiver).toString(10);
         }
         let response = [];
+        let x = [];
         if (receiver == "") {
             response = await DepositInfor.find({ sender: sender });
         } else {
@@ -74,40 +75,10 @@ exports.queryDepositInforByUserAddress = async (req, res) => {
                 response = await DepositInfor.find({ sender: sender, eth_receiver: receiver });
             }
         }
-
-        // set status
-        const tree = await DepositTree.findOne();
-        let ans = [];
         for (let i = 0; i < response.length; i++) {
-            const infor = response[i];
-            let inforDeposit = { ...infor };
-            if(infor.key >= tree.n_leafs) {
-                inforDeposit["status"] = "IN_QUEUE";
-            } else {
-                const publicInput = {
-                    eth_bridge_address: convertHexStringToAddress(bigNumberToHexString(infor.eth_bridge_address)),
-                    eth_receiver: convertHexStringToAddress(bigNumberToHexString(infor.eth_receiver)),
-                    amount: infor.amount,
-                    eth_token_address: convertHexStringToAddress(bigNumberToHexString(infor.eth_token_address)),
-                    key: infor.key
-                };
-                const isSent = await isSentProof(
-                    publicInput.eth_bridge_address,
-                    publicInput.eth_receiver,
-                    publicInput.amount,
-                    publicInput.eth_token_address,
-                    publicInput.key
-                );
-                if (isSent) {
-                    inforDeposit["status"] = "CLAIMED";
-                } else {
-                    inforDeposit["status"] = "CAN_CLAIM";
-                }
-            }
-            ans.push(inforDeposit);
+            x.push(response[i]);
         }
-
-        res.status(200).send(ans);
+        res.status(200).send(x);
     } catch (err) {
         console.log(err);
         res.status(500).send({ err: err.toString() });
