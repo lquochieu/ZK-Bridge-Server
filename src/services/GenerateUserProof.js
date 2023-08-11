@@ -7,9 +7,13 @@ const DepositTree = require("../models/DepositTree");
 
 exports.generateUserProof = async (index) => {
     await initialize();
+    const treeInfor = await DepositTree.findOne();
+    if ( treeInfor.n_leafs <= index ) {
+        return [];
+    }
+    const data = await DepositInfor.find( { "key": { "$lt": treeInfor.n_leafs } } ).sort({"key": 1});
     const tree = getTree();
     
-    const data = await DepositInfor.find().sort({"key": 1});
     if (data.length < index) {
         throw("Invalid key");
     }
@@ -18,21 +22,9 @@ exports.generateUserProof = async (index) => {
         throw("Invalid tree!");
     }
 
-    let n_leafs = depositTree.n_leafs;
-    let nqueue_leafs = depositTree.nqueue_leafs
-    let nmax_leafs_update = 5;
-
     const newValue = Array.from(data, (data) => hash([data.eth_bridge_address, data.eth_receiver, data.amount, data.eth_token_address]));
 
-    for (i = nqueue_leafs; i < nmax_leafs_update; i++) {
-        newValue.push(hash([0]));
-    }
-
-    for (let i = 0; i < n_leafs; i++) {
-        tree.update(i, newValue[i]);
-    }
-
-    for (let i = n_leafs; i < n_leafs + nmax_leafs_update; i++) {
+    for (let i = 0; i < newValue.length; i++) {
         tree.update(i, newValue[i]);
     }
 

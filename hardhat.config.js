@@ -25,7 +25,7 @@ module.exports = {
   defaultNetwork: "bscTestnet",
   networks: {
     bscTestnet: {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+      url: "https://bsc-testnet.publicnode.com/",
       chainId: 97,
       accounts: [`0x${PRIVATE_KEY}`],
       // gas: 5e6,

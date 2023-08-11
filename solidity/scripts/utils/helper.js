@@ -14,7 +14,12 @@ const readJsonFile = (path) => {
 exports.readJsonFile = readJsonFile;
 
 const convertHexStringToAddress = (hexString) => {
-    const strippedHex = hexString.replace(/^0x/, '');
+    let strippedHex = hexString.replace(/^0x/, '');
+    if (strippedHex.length < 40) {
+        for(let i = strippedHex.length; i < 40; i++) {
+            strippedHex = "0" + strippedHex
+        }
+    }
 
     return toChecksumAddress(`0x${strippedHex}`);
 }
